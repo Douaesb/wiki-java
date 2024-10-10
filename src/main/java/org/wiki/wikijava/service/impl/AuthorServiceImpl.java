@@ -30,9 +30,38 @@ public class AuthorServiceImpl implements AuthorService {
         author.setFirstName(firstName);
         author.setLastName(lastName);
         author.setEmail(email);
-        author.setBirthDate(birthDate);
+        author.setDateOfBirth(birthDate);
 
         authorRepository.save(author);
     }
 
+    public Author getAuthorById(Long id) {
+        return authorRepository.findById(id);
+    }
+
+    public List<Author> getAuthors(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return authorRepository.findAll(offset, pageSize);
+    }
+
+    public int getNoOfRecords() {
+        return authorRepository.countAll();
+    }
+
+    public int getNoOfPages(int pageSize) {
+        int totalRecords = getNoOfRecords();
+        return (int) Math.ceil(totalRecords * 1.0 / pageSize);
+    }
+
+    public void updateAuthor(Author author) {
+        authorRepository.update(author);
+    }
+
+    public void deleteAuthor(Long id) {
+        authorRepository.delete(id);
+    }
+
+    public Author getAuthorByEmail(String email) {
+        return authorRepository.findByEmail(email);
+    }
 }

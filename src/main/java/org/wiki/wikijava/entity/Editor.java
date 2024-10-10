@@ -8,15 +8,15 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("Editor")
-public class Editor  extends Author{
+public class Editor extends  Author {
 
     @OneToMany(mappedBy = "editor", cascade = CascadeType.ALL)
     private List<Article> articles;
 
-    // Getters and setters
     public List<Article> getArticles() {
         return articles;
     }
+
     public void setArticles(List<Article> articles) {
         this.articles = articles;
     }

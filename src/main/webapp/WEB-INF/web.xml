@@ -18,7 +18,7 @@
 
     <servlet>
         <servlet-name>Authors</servlet-name>
-        <servlet-class>org.wiki.wikijava.servlet.HomeServlet</servlet-class>
+        <servlet-class>org.wiki.wikijava.servlet.AuthorServlet.AuthorListServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

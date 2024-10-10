@@ -4,8 +4,11 @@ import org.wiki.wikijava.entity.enums.Role;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type_author", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "author")
 public abstract class Author {
 
@@ -23,13 +26,12 @@ public abstract class Author {
     private String email;
 
     @Column(name = "birth_date")
-    private LocalDate birthDate;
+    private LocalDate dateOfBirth;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // Getters et Setters
     public Long getId() {
         return id;
     }
@@ -62,12 +64,12 @@ public abstract class Author {
         this.email = email;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Role getRole() {
@@ -76,5 +78,17 @@ public abstract class Author {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", role=" + role +
+                '}';
     }
 }
