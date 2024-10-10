@@ -1,17 +1,16 @@
 package org.wiki.wikijava.entity;
 
-import org.hibernate.type.EnumType;
 import org.wiki.wikijava.entity.enums.StatusArticle;
 
 import javax.persistence.*;
 import java.sql.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "articles")
 public class Article {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,18 +23,18 @@ public class Article {
     @Column(length = 5000)
     private String contenu;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date publicationDate;
+    private LocalDateTime creationDate;
 
-    @Enumerated(EnumType.TYPE(StatusArticle))
+
+    private LocalDateTime publicationDate;
+
+    @Enumerated(EnumType.STRING)
     private StatusArticle statusArticle;
 
     @ManyToOne
-    @JoinColumn(name = "author_id" , nullable = false)
-    private Auteur auteur;
+    @JoinColumn(name = "editor_id" , nullable = false)
+    private Editor editor;
 
     @OneToMany(mappedBy = "article" , cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -58,16 +57,16 @@ public class Article {
     public void setContenu(String contenu) {
         this.contenu = contenu;
     }
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
-    public Date getPublicationDate() {
+    public LocalDateTime getPublicationDate() {
         return publicationDate;
     }
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(LocalDateTime publicationDate) {
         this.publicationDate = publicationDate;
     }
     public StatusArticle getStatusArticle() {
@@ -76,11 +75,11 @@ public class Article {
     public void setStatusArticle(StatusArticle statusArticle) {
         this.statusArticle = statusArticle;
     }
-    public Auteur getAuteur() {
-        return auteur;
+    public Editor getEditor() {
+        return editor;
     }
-    public void setAuteur(Auteur auteur) {
-        this.auteur = auteur;
+    public void setEditor(Editor editor) {
+        this.editor = editor;
     }
     public List<Comment> getComments() {
         return comments;

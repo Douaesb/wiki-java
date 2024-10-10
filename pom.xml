@@ -66,6 +66,15 @@
             <scope>test</scope>
         </dependency>
 
+
+        <!-- Hibernate JPA -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.4.32.Final</version>
+        </dependency>
+
+
         <!-- JSP and JSTL -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>

@@ -1,4 +1,5 @@
 package org.wiki.wikijava.entity;
+
 import org.wiki.wikijava.entity.enums.Role;
 
 import javax.persistence.*;
@@ -6,8 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type_auteur", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "auteurs")
-public class Auteur {
+public abstract class Auteur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +25,10 @@ public class Auteur {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Temporal(TemporalType.DATE)
     private Date dateNaissance;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @OneToMany(mappedBy = "auteur", cascade = CascadeType.ALL)
-    private List<Article> articles;
 
     public Long getId() {
         return id;
@@ -66,12 +65,6 @@ public class Auteur {
     }
     public void setRole(Role role) {
         this.role = role;
-    }
-    public List<Article> getArticles() {
-        return articles;
-    }
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
     }
 
 }

@@ -13,58 +13,48 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 1000, nullable = false)
-    private String contenu;
+    private String content;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateCreation;
 
-    @Enumerated(EnumType.STRING)
-    private StatusComment statut;
+    private Date creationDate;
 
     @ManyToOne
-    @JoinColumn(name = "article_id", nullable = false)
+    @JoinColumn(name = "contributor_id")
+    private Contributor contributor;
+
+    @ManyToOne
+    @JoinColumn(name = "article_id")
     private Article article;
 
-    @ManyToOne
-    @JoinColumn(name = "autheur_id",nullable = false)
-    private Auteur auteur;
-
-
+    // Getters and setters
     public Long getId() {
-            return id;
+        return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public String getContenu() {
-        return contenu;
+    public String getContent() {
+        return content;
     }
-    public void setContenu(String contenu) {
-        this.contenu = contenu;
+    public void setContent(String content) {
+        this.content = content;
     }
-    public Date getDateCreation() {
-        return dateCreation;
+    public Date getCreationDate() {
+        return creationDate;
     }
-    public void setDateCreation(Date dateCreation) {
-        this.dateCreation = dateCreation;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
-    public StatusComment getStatut() {
-        return statut;
+    public Contributor getContributor() {
+        return contributor;
     }
-    public void setStatut(StatusComment statut) {
-        this.statut = statut;
+    public void setContributor(Contributor contributor) {
+        this.contributor = contributor;
     }
     public Article getArticle() {
         return article;
     }
     public void setArticle(Article article) {
         this.article = article;
-    }
-    public Auteur getAuteur() {
-        return auteur;
-    }
-    public void setAuteur(Auteur auteur) {
-        this.auteur = auteur;
     }
 }
