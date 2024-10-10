@@ -15,4 +15,14 @@
         <servlet-name>testServlet</servlet-name>
         <url-pattern>/test</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>CommentServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.CommentServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CommentServlet</servlet-name>
+        <url-pattern>/comments</url-pattern>
+    </servlet-mapping>
 </web-app>

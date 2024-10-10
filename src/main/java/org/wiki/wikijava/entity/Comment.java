@@ -1,9 +1,11 @@
 package org.wiki.wikijava.entity;
 
+import org.wiki.wikijava.entity.enums.StatusArticle;
 import org.wiki.wikijava.entity.enums.StatusComment;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "comments")
@@ -16,7 +18,10 @@ public class Comment {
     private String content;
 
 
-    private Date creationDate;
+    private LocalDate creationDate;
+
+    @Enumerated(EnumType.STRING)
+    private StatusComment statusComment;
 
     @ManyToOne
     @JoinColumn(name = "contributor_id")
@@ -39,10 +44,10 @@ public class Comment {
     public void setContent(String content) {
         this.content = content;
     }
-    public Date getCreationDate() {
+    public LocalDate getCreationDate() {
         return creationDate;
     }
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
     }
     public Contributor getContributor() {
@@ -56,5 +61,13 @@ public class Comment {
     }
     public void setArticle(Article article) {
         this.article = article;
+    }
+
+    public StatusComment getStatusComment() {
+        return statusComment;
+    }
+
+    public void setStatusComment(StatusComment statusComment) {
+        this.statusComment = statusComment;
     }
 }
