@@ -3,4 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+    <!-- Configuration du servlet -->
+    <servlet>
+        <servlet-name>testServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.TestServlet</servlet-class>
+    </servlet>
+
+    <!-- Mapping du servlet -->
+    <servlet-mapping>
+        <servlet-name>testServlet</servlet-name>
+        <url-pattern>/test</url-pattern>
+    </servlet-mapping>
 </web-app>
