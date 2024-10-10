@@ -3,35 +3,33 @@ package org.wiki.wikijava.entity;
 import org.wiki.wikijava.entity.enums.Role;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "author")
-public class Author implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public abstract class Author {
 
     @Id
-    @Column(name = "id", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "birthDate")
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    // Getters et Setters
     public Long getId() {
         return id;
     }

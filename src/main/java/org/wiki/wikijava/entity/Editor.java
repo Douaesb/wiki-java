@@ -7,8 +7,8 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("EDITOR")
-public class Editor  extends Auteur{
+@DiscriminatorValue("Editor")
+public class Editor  extends Author{
 
     @OneToMany(mappedBy = "editor", cascade = CascadeType.ALL)
     private List<Article> articles;
