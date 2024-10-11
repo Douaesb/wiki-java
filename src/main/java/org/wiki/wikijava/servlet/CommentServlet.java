@@ -65,7 +65,7 @@ public class CommentServlet extends HttpServlet {
         comment.setArticle(article);
         comment.setContributor(contributor);
         commentService.saveComment(comment);
-        resp.sendRedirect("/WEB-INF/views/comment/show.jsp");
+        resp.sendRedirect(req.getContextPath() +"/comments");
     }
 
     private void updateComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -77,13 +77,13 @@ public class CommentServlet extends HttpServlet {
         comment.setContent(content);
         commentService.updateComment(comment);
 
-        resp.sendRedirect("comments?action=view&id=" + id);
+        resp.sendRedirect(req.getContextPath() +"/comments");
     }
 
     private void deleteComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Long id = Long.parseLong(req.getParameter("id"));
+        Long id = Long.parseLong(req.getParameter("commentId"));
         commentService.deleteComment(id);
-        resp.sendRedirect("comments?action=list");
+        resp.sendRedirect(req.getContextPath() +"/comments");
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CommentServlet extends HttpServlet {
             case "create":
                 createComment(req, resp);
                 break;
-            case "edit":
+            case "update":
                 updateComment(req, resp);
                 break;
             case "delete":

@@ -13,7 +13,7 @@ public interface CommentRepository {
 
    void update(Comment comment);
 
-   void delete(Comment comment);
+   void delete(Long id);
 
    // List<Comment> findByArticleId(Long articleId);
 

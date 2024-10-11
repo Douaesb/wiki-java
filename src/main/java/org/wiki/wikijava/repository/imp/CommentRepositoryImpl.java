@@ -48,10 +48,10 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public void delete(Comment comment) {
+    public void delete(Long id) {
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        comment = em.merge(comment);
+        Comment comment = em.find(Comment.class, id);
         em.remove(comment);
         em.getTransaction().commit();
         em.close();
