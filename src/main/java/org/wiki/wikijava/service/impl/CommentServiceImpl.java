@@ -45,5 +45,9 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findByArticleId(articleId);
     }
 
+    @Override
+    public List<Comment> getCommentsByArticleAndContributor(Long articleId, Long contributorId) {
+        return commentRepository.findCommentsByArticleAndContributor(articleId, contributorId);
+    }
 
 }

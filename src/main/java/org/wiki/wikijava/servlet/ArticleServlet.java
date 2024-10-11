@@ -126,14 +126,19 @@ public class ArticleServlet extends HttpServlet {
         }
 
         req.setAttribute("article", article);
+
         List<Comment> comments = commentService.getCommentsByArticleId(articleId);
         req.setAttribute("comments", comments);
 
-        System.out.println("Action 'view' triggered for article ID: " + articleId);
-
+        Long staticContributorId = 2L;
+        List<Comment> myComments = commentService.getCommentsByArticleAndContributor(articleId, staticContributorId);
+        req.setAttribute("myComments", myComments);
+        System.out.println(" myyy commmmeentss"+myComments);
         RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/views/comment/show.jsp");
         view.forward(req, resp);
     }
+
+
 
 
 

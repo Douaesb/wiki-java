@@ -17,7 +17,7 @@ public interface CommentRepository {
 
     List<Comment> findByArticleId(Long articleId);
 
-
+    List<Comment> findCommentsByArticleAndContributor(Long articleId, Long contributorId);
 
 
 

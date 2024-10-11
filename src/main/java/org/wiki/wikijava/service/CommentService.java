@@ -12,4 +12,6 @@ public interface CommentService {
     void deleteComment(Long id);
 
     List<Comment> getCommentsByArticleId(Long articleId);
+
+    List<Comment> getCommentsByArticleAndContributor(Long articleId, Long contributorId);
 }
