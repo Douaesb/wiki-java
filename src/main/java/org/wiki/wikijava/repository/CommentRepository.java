@@ -15,12 +15,13 @@ public interface CommentRepository {
 
    void delete(Long id);
 
-    List<Comment> findByArticleId(Long articleId);
+    List<Comment> findByArticleId(Long articleId, int page, int pageSize);
 
-    List<Comment> findCommentsByArticleAndContributor(Long articleId, Long contributorId);
+    List<Comment> findCommentsByArticleAndContributor(Long articleId, Long contributorId, int page, int pageSize);
 
+    public Long getCommentCountByArticleId(Long articleId);
 
-
+    Long getCommentCountByArticleAndContributor(Long articleId, Long contributorId);
 
 
 

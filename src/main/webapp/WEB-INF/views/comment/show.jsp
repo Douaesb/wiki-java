@@ -42,7 +42,7 @@
     <div class="flex justify-between w-full items-start">
         <div class="flex gap-2">
             <h2 class="text-xl font-semibold">Comments</h2>
-            <span class="text-xl font-semibold">(40)</span>
+            <span class="text-xl font-semibold">(${totalComments})</span>
         </div>
         <div class="flex gap-6 pb-3">
             <button id="all-comments" class="bg-gray-500 rounded-lg p-2 text-white"
@@ -97,6 +97,45 @@
                 </div>
             </c:forEach>
         </div>
+        <!--  pagination All comments -->
+
+        <div class="flex items-center justify-center border-t border-gray-200 bg-white w-full px-4 py-3 sm:px-6">
+            <div class="flex flex-1 justify-between sm:hidden">
+                <a href="?action=view&id=${article.id}&page=${currentPage - 1}&pageSize=${pageSize}"
+                   class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${currentPage == 1 ? 'cursor-not-allowed' : ''}">Previous</a>
+                <a href="?action=view&id=${article.id}&page=${currentPage + 1}&pageSize=${pageSize}"
+                   class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${currentPage == totalPages ? 'cursor-not-allowed' : ''}">Next</a>
+            </div>
+            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
+                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                    <a href="?action=view&id=${article.id}&page=${currentPage - 1}&pageSize=${pageSize}"
+                       class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 ${currentPage == 1 ? 'cursor-not-allowed' : ''}">
+                        <svg class="h-5 w-5 mt-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="items-center">Previous</span>
+                    </a>
+
+                    <!-- Dynamically generate page links -->
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <a href="?action=view&id=${article.id}&page=${i}&pageSize=${pageSize}"
+                           class="relative inline-flex items-center px-4 py-2 text-sm font-semibold ${i == currentPage ? 'bg-black text-white' : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'}">
+                                ${i}
+                        </a>
+                    </c:forEach>
+
+                    <a href="?action=view&id=${article.id}&page=${currentPage + 1}&pageSize=${pageSize}"
+                       class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 ${currentPage == totalPages ? 'cursor-not-allowed' : ''}">
+                        <span class="items-center">Next</span>
+
+                        <svg class="h-5 w-5 mt-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                        </svg>
+
+                    </a>
+                </nav>
+            </div>
+        </div>
     </div>
 
     <!-- My Comments Section -->
@@ -129,6 +168,43 @@
                     <p class="pt-4">${myComment.content}</p>
                 </div>
             </c:forEach>
+
+        </div>
+        <!--  pagination my comments -->
+        <div class="flex items-center justify-center border-t border-gray-200 bg-white w-full px-4 py-3 sm:px-6">
+            <div class="flex flex-1 justify-between sm:hidden">
+                <a href="?action=view&id=${article.id}&contributorId=${contributorId}&myPage=${currentMyPage - 1}&pageSize=${pageSize}"
+                   class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${currentMyPage == 1 ? 'cursor-not-allowed' : ''}">Previous</a>
+                <a href="?action=view&id=${article.id}&contributorId=${contributorId}&myPage=${currentMyPage + 1}&pageSize=${pageSize}"
+                   class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${currentMyPage == totalMyPages ? 'cursor-not-allowed' : ''}">Next</a>
+            </div>
+            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
+                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                    <a href="?action=view&id=${article.id}&contributorId=${contributorId}&myPage=${currentMyPage - 1}&pageSize=${pageSize}"
+                       class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 ${currentMyPage == 1 ? 'cursor-not-allowed' : ''}">
+                        <svg class="h-5 w-5 mt-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="items-center">Previous</span>
+                    </a>
+
+                    <!-- Dynamically generate page links for my comments -->
+                    <c:forEach var="i" begin="1" end="${totalMyPages}">
+                        <a href="?action=view&id=${article.id}&contributorId=${contributorId}&myPage=${i}&pageSize=${pageSize}"
+                           class="relative inline-flex items-center px-4 py-2 text-sm font-semibold ${i == currentMyPage ? 'bg-black text-white' : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'}">
+                                ${i}
+                        </a>
+                    </c:forEach>
+
+                    <a href="?action=view&id=${article.id}&contributorId=${contributorId}&myPage=${currentMyPage + 1}&pageSize=${pageSize}"
+                       class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 ${currentMyPage == totalMyPages ? 'cursor-not-allowed' : ''}">
+                        <span class="items-center">Next</span>
+                        <svg class="h-5 w-5 mt-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </nav>
+            </div>
         </div>
     </div>
 
@@ -165,6 +241,7 @@
                 </form>
             </div>
         </div>
+
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>

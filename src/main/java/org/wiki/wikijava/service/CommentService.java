@@ -11,7 +11,10 @@ public interface CommentService {
     void updateComment(Comment comment);
     void deleteComment(Long id);
 
-    List<Comment> getCommentsByArticleId(Long articleId);
+    List<Comment> getCommentsByArticleId(Long articleId, int page, int pageSize);
+    public Long getCommentCountByArticleId(Long articleId);
 
-    List<Comment> getCommentsByArticleAndContributor(Long articleId, Long contributorId);
+    List<Comment> getCommentsByArticleAndContributor(Long articleId, Long contributorId, int page, int pageSize);
+
+    Long getCommentCountByArticleAndContributor(Long articleId, Long contributorId);
 }

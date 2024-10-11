@@ -127,16 +127,81 @@ public class ArticleServlet extends HttpServlet {
 
         req.setAttribute("article", article);
 
-        List<Comment> comments = commentService.getCommentsByArticleId(articleId);
+        // Pagination for all comments
+        int page = 1;
+        int pageSize = 3;
+
+        String pageParam = req.getParameter("page");
+        if (pageParam != null && !pageParam.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam);
+                if (page < 1) {
+                    page = 1;
+                }
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        String pageSizeParam = req.getParameter("pageSize");
+        if (pageSizeParam != null && !pageSizeParam.isEmpty()) {
+            try {
+                pageSize = Integer.parseInt(pageSizeParam);
+                if (pageSize < 1) {
+                    pageSize = 3;
+                }
+            } catch (NumberFormatException e) {
+                pageSize = 3;
+            }
+        }
+
+        // Fetch all comments for the article
+        List<Comment> comments = commentService.getCommentsByArticleId(articleId, page, pageSize);
         req.setAttribute("comments", comments);
 
+        Long totalComments = commentService.getCommentCountByArticleId(articleId);
+        req.setAttribute("totalComments", totalComments);
+
+        // Calculate total pages for all comments
+        int totalPages = (int) Math.ceil((double) totalComments / pageSize);
+        req.setAttribute("totalPages", totalPages);
+        req.setAttribute("currentPage", page);
+
+        // Static contributor ID for my comments
         Long staticContributorId = 2L;
-        List<Comment> myComments = commentService.getCommentsByArticleAndContributor(articleId, staticContributorId);
+
+        // Pagination for my comments
+        int myPage = 1; // Default page for my comments
+        String myPageParam = req.getParameter("myPage");
+        if (myPageParam != null && !myPageParam.isEmpty()) {
+            try {
+                myPage = Integer.parseInt(myPageParam);
+                if (myPage < 1) {
+                    myPage = 1;
+                }
+            } catch (NumberFormatException e) {
+                myPage = 1;
+            }
+        }
+
+        // Fetch my comments for the article
+        List<Comment> myComments = commentService.getCommentsByArticleAndContributor(articleId, staticContributorId, myPage, pageSize);
         req.setAttribute("myComments", myComments);
-        System.out.println(" myyy commmmeentss"+myComments);
+
+        Long totalMyComments = commentService.getCommentCountByArticleAndContributor(articleId, staticContributorId);
+        req.setAttribute("totalMyComments", totalMyComments);
+
+        // Calculate total pages for my comments
+        int totalMyPages = (int) Math.ceil((double) totalMyComments / pageSize);
+        req.setAttribute("totalMyPages", totalMyPages);
+        req.setAttribute("currentMyPage", myPage);
+
+        System.out.println("My comments: " + myComments);
+
         RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/views/comment/show.jsp");
         view.forward(req, resp);
     }
+
 
 
 

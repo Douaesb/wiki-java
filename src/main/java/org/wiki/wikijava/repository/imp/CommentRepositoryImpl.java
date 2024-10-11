@@ -58,11 +58,15 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> findByArticleId(Long articleId) {
+    public List<Comment> findByArticleId(Long articleId, int page, int pageSize) {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
+            int firstResult = (page - 1) * pageSize;
+
             return em.createQuery("SELECT c FROM Comment c WHERE c.article.id = :articleId", Comment.class)
                     .setParameter("articleId", articleId)
+                    .setFirstResult(firstResult)
+                    .setMaxResults(pageSize)
                     .getResultList();
         } finally {
             em.close();
@@ -70,14 +74,47 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> findCommentsByArticleAndContributor(Long articleId, Long contributorId) {
+    public Long getCommentCountByArticleId(Long articleId) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            return em.createQuery("SELECT COUNT(c) FROM Comment c WHERE c.article.id = :articleId", Long.class)
+                    .setParameter("articleId", articleId)
+                    .getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Long getCommentCountByArticleAndContributor(Long articleId, Long contributorId) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            return em.createQuery("SELECT COUNT(c) FROM Comment c WHERE c.article.id = :articleId AND c.contributor.id = :contributorId", Long.class)
+                    .setParameter("articleId", articleId)
+                    .setParameter("contributorId", contributorId)
+                    .getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+
+
+
+    @Override
+    public List<Comment> findCommentsByArticleAndContributor(Long articleId, Long contributorId, int page, int pageSize) {
         EntityManager em = entityManagerFactory.createEntityManager();
         try {
             String jpql = "SELECT c FROM Comment c WHERE c.article.id = :articleId AND c.contributor.id = :contributorId";
-            return em.createQuery(jpql, Comment.class)
+
+            TypedQuery<Comment> query = em.createQuery(jpql, Comment.class)
                     .setParameter("articleId", articleId)
-                    .setParameter("contributorId", contributorId)
-                    .getResultList();
+                    .setParameter("contributorId", contributorId);
+
+            query.setFirstResult((page - 1) * pageSize);
+            query.setMaxResults(pageSize);
+
+            return query.getResultList();
         } finally {
             em.close();
         }
