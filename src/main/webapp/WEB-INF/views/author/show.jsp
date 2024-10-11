@@ -41,12 +41,15 @@
                                   fill="#2563eb"></path>
                         </svg>
                     </button>
-                    <button class="text-red-600 hover:text-red-900" aria-label="Delete">
-                        <!-- SVG for Delete -->
-                        <svg class="w-6 h-6" fill="#dc2626" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
-                        </svg>
-                    </button>
+                    <form id="deleteForm" method="post" action="deleteAuthor" style="display:inline;">
+                        <input type="hidden" id="authorIdToDelete" name="id" value="">
+                        <button type="button" class="text-red-600 hover:text-red-900" aria-label="Delete" onclick="confirmDelete(${author.id})">
+                            <!-- SVG for Delete -->
+                            <svg class="w-6 h-6" fill="#dc2626" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
+                            </svg>
+                        </button>
+                    </form>
                 </td>
             </tr>
         </c:forEach>
@@ -84,3 +87,14 @@
         </a>
     </div>
 </div>
+
+
+
+<script>
+    function confirmDelete(authorId) {
+        if (confirm("Are you sure you want to delete this author?")) {
+            document.getElementById('authorIdToDelete').value = authorId;
+            document.getElementById('deleteForm').submit();
+        }
+    }
+</script>

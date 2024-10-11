@@ -15,7 +15,7 @@ public interface AuthorRepository {
 
     void update(Author author);
 
-    void delete(Long id);
+    boolean delete(Long id);
 
     Author findByEmail(String email);
 }

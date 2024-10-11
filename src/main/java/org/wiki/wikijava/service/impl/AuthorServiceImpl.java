@@ -57,10 +57,9 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.update(author);
     }
 
-    public void deleteAuthor(Long id) {
-        authorRepository.delete(id);
+    public boolean deleteAuthor(long id) {
+        return authorRepository.delete(id);
     }
-
     public Author getAuthorByEmail(String email) {
         return authorRepository.findByEmail(email);
     }

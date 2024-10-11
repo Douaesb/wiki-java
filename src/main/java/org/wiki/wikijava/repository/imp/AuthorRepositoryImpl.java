@@ -11,6 +11,8 @@ import java.util.List;
 
 public class AuthorRepositoryImpl implements AuthorRepository {
 
+
+
     private EntityManager entityManager;
 
     public AuthorRepositoryImpl(EntityManager entityManager) {
@@ -55,11 +57,27 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     }
 
+
     @Override
-    public void delete(Long id) {
-
+    public boolean delete(Long id) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            Author author = entityManager.find(Author.class, id);
+            if (author != null) {
+                entityManager.remove(author);
+                transaction.commit();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
     }
-
     @Override
     public Author findByEmail(String email) {
         return null;

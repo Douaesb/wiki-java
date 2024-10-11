@@ -25,4 +25,15 @@
         <servlet-name>Authors</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteAuthor</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.AuthorServlet.DeleteAuthorServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DeleteAuthor</servlet-name>
+        <url-pattern>/deleteAuthor</url-pattern>
+    </servlet-mapping>
+
 </web-app>
