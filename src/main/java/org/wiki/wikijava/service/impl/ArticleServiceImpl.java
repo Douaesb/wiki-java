@@ -46,4 +46,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Editor getEditorById(int id) {
         return articleRepository.getEditorById(id);
     }
+
+    @Override
+    public List<Article> getArticlesByAuthorId(int authorId) {
+        return articleRepository.getArticlesByAuthorId(authorId);
+    }
 }

@@ -16,12 +16,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AuthentificationServlet</servlet-name>
+        <servlet-name>AuthServlet</servlet-name>
         <servlet-class>org.wiki.wikijava.servlet.AuthServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>AuthentificationServlet</servlet-name>
+        <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/auth</url-pattern>
     </servlet-mapping>
 
@@ -58,6 +58,12 @@
         <url-pattern>/deleteAuthor</url-pattern>
     </servlet-mapping>
 
-
-
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
 </web-app>

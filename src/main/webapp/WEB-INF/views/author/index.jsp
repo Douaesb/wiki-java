@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,10 +17,28 @@
             <a href="#" class="hover:text-blue-200">Authors</a>
             <a href="#" class="hover:text-blue-200">Comments</a>
         </div>
+        <div class="pr-4">
+            <c:if test="${not empty sessionScope.adminEmail}">
+                <form action="<%=request.getContextPath()%>/logout" method="post">
+                    <button type="submit" class="bg-white text-black px-4 py-2 rounded hover:bg-gray-200">
+                        Logout
+                    </button>
+                </form>
+            </c:if>
+        </div>
     </div>
 </nav>
 
 <main class="container mx-auto mt-8 px-4">
+    <div class="bg-gray-100 p-4 rounded-md shadow-sm mb-4">
+        <h2 class="text-lg font-semibold text-gray-700">Admin Information</h2>
+        <p class="text-gray-600">
+            Your email : <strong>${adminEmail}</strong>
+        </p>
+        <p class="text-gray-600">
+            Your role: <strong>${adminRole}</strong>
+        </p>
+    </div>
     <h1 class="text-3xl font-bold mb-6 text-gray-800">Author List</h1>
 
     <div class="flex justify-end mb-4">

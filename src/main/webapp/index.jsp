@@ -15,24 +15,27 @@
             <h1 class="text-2xl font-semibold mb-4 text-center">Bienvenue dans notre blog platform</h1>
             <p class="text-center mb-6 text-gray-600">Entrez ton email s'il vous plait pour te connecter</p>
 
-            <form action="<%= request.getContextPath() %>/auth" method="post" class="space-y-4">
+            <form action="<%= request.getContextPath() %>/auth" method="POST" class="space-y-4">
                 <div>
                     <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
                     <input type="email" id="email" name="email" placeholder="Email"
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-500">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-500" required>
                 </div>
+
                 <div>
                     <button type="submit" class="w-full py-2 bg-gradient-to-r from-gray-400 to-gray-600 text-white font-semibold rounded-lg hover:from-gray-500 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
                         CONNEXION
                     </button>
                 </div>
+
+                <!-- Error message display -->
+                <div>
+                    <p class="text-red-500">
+                        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+                        <%= errorMessage != null ? errorMessage : "" %>
+                    </p>
+                </div>
             </form>
-        </div>
-        <div>
-            <p class="text-red-500">
-                <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-                <%= errorMessage != null ? errorMessage : "" %>
-            </p>
         </div>
 
         <!-- Right Section: Image -->

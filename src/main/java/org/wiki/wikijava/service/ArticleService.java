@@ -14,4 +14,6 @@ public interface ArticleService {
     List<Article> searchArticle(String term);
 
     Editor getEditorById(int i);
+
+    List<Article> getArticlesByAuthorId(int authorId);
 }

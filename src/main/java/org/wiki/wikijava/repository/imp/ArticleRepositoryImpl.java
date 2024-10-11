@@ -97,6 +97,24 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
+    public List<Article> getArticlesByAuthorId(int id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Article> articles = Collections.emptyList();
+        try {
+            TypedQuery<Article> query = entityManager.createQuery(
+                    "SELECT a FROM Article a WHERE a.editor.id = :id", Article.class);
+            query.setParameter("id", Long.valueOf(id));
+            articles = query.getResultList();
+            System.out.println(articles.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return Collections.unmodifiableList(articles);
+    }
+
+    @Override
     public List<Article> findByTitle(String title) {
         return Collections.emptyList();
     }

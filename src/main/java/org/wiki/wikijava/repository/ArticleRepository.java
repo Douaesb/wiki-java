@@ -15,4 +15,5 @@ public interface ArticleRepository {
     List<Article> findByTitle(String title);
 
     Editor getEditorById(int id);
+    List<Article> getArticlesByAuthorId(int id);
 }
