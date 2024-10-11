@@ -78,20 +78,7 @@
                                 ${comment.contributor.nom} ${comment.contributor.prenom} * <span class="mt-1 text-center items-center">${comment.creationDate}</span>
                             </span>
                         </div>
-                        <div class="icons flex gap-3 mt-2">
-                            <div data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="showModal" data-id="<c:out value='${comment.id}' />"
-                                 data-content="<c:out value='${comment.content}' />">
-                                <svg class="w-6 h-6" fill="#000000" viewBox="0 0 24 24"><path d="M3.99 16.854L2.685 20.358a.75.75 0 0 0 .966.965l3.503-1.314a3 3 0 0 0 1.068-.687L18.36 9.175s-.354-1.061-1.414-2.122c-1.06-1.06-2.122-1.414-2.122-1.414L4.677 15.786a3 3 0 0 0-.687 1.068zm12.249-12.63l1.383-1.383c.248-.248.579-.406.925-.348.487.08 1.232.322 1.934 1.025.703.703.945 1.447 1.025 1.934.058.346-.1.677-.348.925L19.774 7.76s-.353-1.06-1.414-2.12c-1.06-1.062-2.121-1.415-2.121-1.415z"></path></svg>
-                            </div>
-                            <form action="comments?action=delete" method="post">
-                                <input type="hidden" name="commentId" value="${comment.id}">
-                                <button type="submit" onclick="return confirm('Are you sure you want to delete this comment?');">
-                                    <svg class="w-6 h-6" fill="#000000" viewBox="0 0 24 24">
-                                        <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
+
                     </div>
                     <p class="pt-4">${comment.content}</p>
                 </div>
@@ -152,11 +139,12 @@
                         </div>
                         <div class="icons flex gap-3 mt-2">
                             <div data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="showModal" data-id="<c:out value='${myComment.id}' />"
-                                 data-content="<c:out value='${myComment.content}' />">
+                                 data-content="<c:out value='${myComment.content}' />"  data-articleid="<c:out value='${article.id}' />">
                                 <svg class="w-6 h-6" fill="#000000" viewBox="0 0 24 24"><path d="M3.99 16.854L2.685 20.358a.75.75 0 0 0 .966.965l3.503-1.314a3 3 0 0 0 1.068-.687L18.36 9.175s-.354-1.061-1.414-2.122c-1.06-1.06-2.122-1.414-2.122-1.414L4.677 15.786a3 3 0 0 0-.687 1.068zm12.249-12.63l1.383-1.383c.248-.248.579-.406.925-.348.487.08 1.232.322 1.934 1.025.703.703.945 1.447 1.025 1.934.058.346-.1.677-.348.925L19.774 7.76s-.353-1.06-1.414-2.12c-1.06-1.062-2.121-1.415-2.121-1.415z"></path></svg>
                             </div>
                             <form action="comments?action=delete" method="post">
                                 <input type="hidden" name="commentId" value="${myComment.id}">
+                                <input type="hidden" name="articleId" value="${article.id}">
                                 <button type="submit" onclick="return confirm('Are you sure you want to delete this comment?');">
                                     <svg class="w-6 h-6" fill="#000000" viewBox="0 0 24 24">
                                         <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
@@ -230,6 +218,8 @@
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <input type="hidden" name="id" id="editId" required>
+                            <input type="hidden" name="articleId" id="articleId" required>
+
                             <label for="description"></label>
                             <textarea id="description" name="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product description here"></textarea>
                         </div>
@@ -252,12 +242,16 @@
         triggers.forEach(function(trigger) {
             trigger.addEventListener('click', function () {
                 var id = this.getAttribute('data-id');
+                var articleid = this.getAttribute('data-articleid');
+
                 var content = this.getAttribute('data-content');
 
                 console.log('ID:', id);
                 console.log('Content:', content);
 
                 document.getElementById('editId').value = id;
+                document.getElementById('articleId').value = articleid;
+
                 document.getElementById('description').value = content;
 
             });

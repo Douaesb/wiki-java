@@ -17,7 +17,7 @@ public interface CommentRepository {
 
     List<Comment> findByArticleId(Long articleId, int page, int pageSize);
 
-    List<Comment> findCommentsByArticleAndContributor(Long articleId, Long contributorId, int page, int pageSize);
+    List<Comment> findCommentsByArticleAndContributor(Long articleId, Long contributorId);
 
     public Long getCommentCountByArticleId(Long articleId);
 

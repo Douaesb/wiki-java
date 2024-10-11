@@ -73,17 +73,19 @@ public class CommentServlet extends HttpServlet {
         Long id = Long.parseLong(req.getParameter("id"));
         String content = req.getParameter("content");
         Comment comment = commentService.findCommentById(id);
+        long articleId = Long.parseLong(req.getParameter("articleId"));
 
         comment.setContent(content);
         commentService.updateComment(comment);
 
-        resp.sendRedirect(req.getContextPath() +"/comments");
+        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId);
     }
 
     private void deleteComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Long id = Long.parseLong(req.getParameter("commentId"));
+        long articleId = Long.parseLong(req.getParameter("articleId"));
         commentService.deleteComment(id);
-        resp.sendRedirect(req.getContextPath() +"/comments");
+        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId);
     }
 
     @Override

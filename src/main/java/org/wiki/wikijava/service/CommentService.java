@@ -14,7 +14,7 @@ public interface CommentService {
     List<Comment> getCommentsByArticleId(Long articleId, int page, int pageSize);
     public Long getCommentCountByArticleId(Long articleId);
 
-    List<Comment> getCommentsByArticleAndContributor(Long articleId, Long contributorId, int page, int pageSize);
+    List<Comment> getCommentsByArticleAndContributor(Long articleId, Long contributorIde);
 
     Long getCommentCountByArticleAndContributor(Long articleId, Long contributorId);
 }
