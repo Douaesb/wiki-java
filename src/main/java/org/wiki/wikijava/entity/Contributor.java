@@ -7,8 +7,8 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("CONTRIBUTOR")
-public class Contributor extends Auteur{
+@DiscriminatorValue("Contributor")
+public class Contributor extends Author{
 
     @OneToMany(mappedBy = "contributor", cascade = CascadeType.ALL)
     private List<Comment> comments;

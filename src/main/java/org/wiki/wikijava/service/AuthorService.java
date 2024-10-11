@@ -1,7 +1,24 @@
 package org.wiki.wikijava.service;
 
-import org.wiki.wikijava.entity.Auteur;
 
-public interface AuthorService {
-    Auteur authenticate(String email);
+import org.wiki.wikijava.entity.Author;
+
+import java.time.LocalDate;
+import java.util.List;
+
+ public interface AuthorService {
+
+     void addAuthor(String firstName, String lastName, String email, String role, LocalDate birthDate) ;
+     Author getAuthorById(Long id);
+
+     List<Author> getAuthors(int page, int pageSize) ;
+
+     int getNoOfRecords();
+
+     int getNoOfPages(int pageSize) ;
+
+     void updateAuthor(Author author);
+
+     boolean deleteAuthor(long id);
+     Author authenticate(String email);
 }

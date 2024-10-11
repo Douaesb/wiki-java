@@ -3,7 +3,7 @@
     <persistence-unit name="WikiJava">
         <class>org.wiki.wikijava.entity.Article</class>
         <class>org.wiki.wikijava.entity.Comment</class>
-        <class>org.wiki.wikijava.entity.Auteur</class>
+        <class>org.wiki.wikijava.entity.Author</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/wiki_db"/>

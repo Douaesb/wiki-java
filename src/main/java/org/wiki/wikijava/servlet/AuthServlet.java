@@ -1,6 +1,5 @@
 package org.wiki.wikijava.servlet;
-
-import org.wiki.wikijava.entity.Auteur;
+import org.wiki.wikijava.entity.Author;
 import org.wiki.wikijava.service.AuthorService;
 import org.wiki.wikijava.service.impl.AuthorServiceImpl;
 
@@ -22,7 +21,7 @@ public class AuthServlet extends HttpServlet {
     }
     @Override
     public void init() throws ServletException {
-           this.authorService = new AuthorServiceImpl();
+           //this.authorService = new AuthorServiceImpl();
 
     }
 
@@ -34,7 +33,7 @@ public class AuthServlet extends HttpServlet {
             session.setAttribute("email", email);
             resp.sendRedirect(req.getContextPath() + "/index.jsp");
         }
-        Auteur authentificateAutheur = authorService.authenticate(email);
+        Author authentificateAutheur = authorService.authenticate(email);
         if (authentificateAutheur != null) {
             HttpSession session = req.getSession();
             session.setAttribute("authentificate", authentificateAutheur);
