@@ -36,8 +36,22 @@
         </div>
     </div>
 
-    <jsp:include page="show.jsp" />
+    <div id="editPopup" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-gray-100 rounded-lg shadow-lg w-full max-w-md relative">
+            <button class="absolute top-2 right-2 text-gray-600 text-3xl" onclick="closeEditPopup()">&times;</button>
 
+            <jsp:include page="form-edit-author.jsp" />
+        </div>
+    </div>
+
+    <jsp:include page="show.jsp" />
+    <script>
+
+        function closeEditPopup() {
+            document.getElementById('editPopup').classList.add('hidden');
+        }
+
+    </script>
 </main>
 </body>
 </html>

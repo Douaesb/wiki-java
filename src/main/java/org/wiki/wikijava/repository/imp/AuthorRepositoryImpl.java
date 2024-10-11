@@ -23,6 +23,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public List<Author> findAll(int offset, int limit) {
+        entityManager.clear();
         TypedQuery<Author> query = entityManager.createQuery("SELECT a FROM Author a", Author.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
@@ -51,8 +52,22 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public void update(Author author) {
+        System.out.println(author);
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.merge(author);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
 
+            throw new RuntimeException("Failed to update author", e);
+        }
     }
+
+
 
 
     @Override

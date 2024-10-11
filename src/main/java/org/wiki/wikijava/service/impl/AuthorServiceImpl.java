@@ -16,21 +16,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     public void addAuthor(String firstName, String lastName, String email, String role, LocalDate birthDate) {
-        Author author;
-        if (role.equalsIgnoreCase("Contributor")) {
-            author = new Contributor();
-            author.setRole(Role.CONTRIBUTOR);
-        } else if (role.equalsIgnoreCase("Editor")) {
-            author = new Editor();
-            author.setRole(Role.EDITOR);
-        } else {
-            throw new IllegalArgumentException("Invalid role");
-        }
-
-        author.setFirstName(firstName);
-        author.setLastName(lastName);
-        author.setEmail(email);
-        author.setDateOfBirth(birthDate);
+        Author author = getAuthor(firstName, lastName, email, role, birthDate);
 
         authorRepository.save(author);
     }
@@ -53,9 +39,34 @@ public class AuthorServiceImpl implements AuthorService {
         return (int) Math.ceil(totalRecords * 1.0 / pageSize);
     }
 
-    public void updateAuthor(Author author) {
+    public void updateAuthor(Long authorId, String firstName, String lastName, String email, String role, LocalDate birthDate) {
+
+        Author author=null;
+
+        author = getAuthor(firstName, lastName, email, role, birthDate);
+        author.setId(authorId);
+
         authorRepository.update(author);
     }
+
+    private Author getAuthor(String firstName, String lastName, String email, String role, LocalDate birthDate) {
+        Author author;
+        if (role.equalsIgnoreCase("Contributor")) {
+            author = new Contributor();
+            author.setRole(Role.CONTRIBUTOR);
+        } else if (role.equalsIgnoreCase("Editor")) {
+            author = new Editor();
+            author.setRole(Role.EDITOR);
+        } else {
+            throw new IllegalArgumentException("Invalid role");
+        }
+        author.setFirstName(firstName);
+        author.setLastName(lastName);
+        author.setEmail(email);
+        author.setDateOfBirth(birthDate);
+        return author;
+    }
+
 
     public boolean deleteAuthor(long id) {
         return authorRepository.delete(id);

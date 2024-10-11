@@ -17,7 +17,7 @@ import java.util.List;
 
      int getNoOfPages(int pageSize) ;
 
-     void updateAuthor(Author author);
+     public void updateAuthor(Long authorId, String firstName, String lastName, String email, String role, LocalDate birthDate) ;
 
      boolean deleteAuthor(long id);
      Author authenticate(String email);

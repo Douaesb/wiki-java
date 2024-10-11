@@ -36,4 +36,18 @@
         <url-pattern>/deleteAuthor</url-pattern>
     </servlet-mapping>
 
+
+
+
+    <servlet>
+        <servlet-name>UpdateAuthorServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.AuthorServlet.UpdateAuthorServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UpdateAuthorServlet</servlet-name>
+        <url-pattern>/updateAuthor</url-pattern>
+    </servlet-mapping>
+
+
 </web-app>
