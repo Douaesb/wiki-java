@@ -31,7 +31,7 @@
                 </td>
                 <td class="px-4 py-4 whitespace-nowrap"><c:out value="${author.email}"/></td>
 
-                            <td class="px-4 py-4 whitespace-nowrap"><c:out value="${author.dateOfBirth}"/></td>
+                <td class="px-4 py-4 whitespace-nowrap"><c:out value="${author.dateOfBirth}"/></td>
                 <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
                     <button class="text-blue-600 hover:text-blue-900 mr-3" aria-label="Edit">
                         <!-- SVG for Edit -->

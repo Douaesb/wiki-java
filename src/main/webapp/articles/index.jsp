@@ -19,11 +19,32 @@
         <!-- Navbar Links -->
         <nav class="flex-grow flex justify-center space-x-12 text-lg">
             <a href="#" class="text-gray-600 hover:text-gray-800">Articles</a>
-            <a href="#" class="text-gray-600 hover:text-gray-800">Mes Articles</a>
+
+            <!-- Check if the author's role is EDITOR -->
+            <c:if test="${sessionScope.authorRole == 'EDITOR'}">
+                <a href="<%=request.getContextPath()%>/articles?action=malist" class="text-gray-600 hover:text-gray-800">Mes Articles</a>
+            </c:if>
         </nav>
+
+        <div class="pr-4">
+            <c:if test="${not empty sessionScope.authorName}">
+                <form action="<%=request.getContextPath()%>/logout" method="post">
+                    <button type="submit" class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+                        Logout
+                    </button>
+                </form>
+            </c:if>
+        </div>
     </div>
 </header>
-
+<div class="text-gray-600 text-lg">
+    <c:if test="${not empty sessionScope.authorName && not empty sessionScope.authorRole}">
+        Welcome, <strong>${sessionScope.authorName}</strong>! Your role: <strong>${sessionScope.authorRole}</strong>
+    </c:if>
+    <c:if test="${empty sessionScope.authorName || empty sessionScope.authorRole}">
+        Please log in to access your account.
+    </c:if>
+</div>
 <!-- Search Bar Centered Below the Navbar -->
 <div class="mt-4 flex justify-center">
     <div class="relative w-full md:w-1/2">
@@ -72,6 +93,7 @@
             <div class="mb-4">
                 <label for="title" class="block text-gray-700">Title</label>
                 <input type="hidden" name="action" value="insert">
+                <input type="hidden" name="editor_id" value="${sessionScope.authorId}">
                 <input type="text" id="title" name="title" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
             </div>
             <div class="mb-4">

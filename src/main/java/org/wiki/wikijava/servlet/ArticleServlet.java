@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,6 +43,11 @@ public class ArticleServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("authorName") == null) {
+            resp.sendRedirect(req.getContextPath() + "/");
+            return;
+        }
         String action = req.getParameter("action");
         if (action == null) {
             action = "list";
@@ -49,6 +55,9 @@ public class ArticleServlet extends HttpServlet {
         switch (action) {
             case "list":
                 listArticles(req, resp);
+                break;
+            case "malist":
+                mesArticles(req,resp);
                 break;
             case "view":
                 viewArticle(req, resp);
@@ -61,6 +70,11 @@ public class ArticleServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("authorName") == null) {
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
         String action = request.getParameter("action");
 
         try {
@@ -78,7 +92,7 @@ public class ArticleServlet extends HttpServlet {
     }
     private void listArticles(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Article> articles = articleService.getArticles();
-        req.setAttribute("articles", articles);// Ensure this prints the correct count
+        req.setAttribute("articles", articles);
         RequestDispatcher view = req.getRequestDispatcher("/articles/index.jsp");
         view.forward(req, resp);
     }
@@ -88,6 +102,7 @@ public class ArticleServlet extends HttpServlet {
     private void insertArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
+        int editor_id = Integer.parseInt(request.getParameter("editor_id"));
 
         if (title == null || content == null || title.isEmpty() || content.isEmpty()) {
             request.setAttribute("errorMessage", "Title and content are required.");
@@ -102,7 +117,7 @@ public class ArticleServlet extends HttpServlet {
         newArticle.setStatusArticle(StatusArticle.DRAFT);
 
         Editor author = new Editor();
-        author.setId(1L);
+        author.setId((long) editor_id);
         newArticle.setEditor(author);
 
         try {
@@ -113,6 +128,22 @@ public class ArticleServlet extends HttpServlet {
             RequestDispatcher view = request.getRequestDispatcher("/articles");
             view.forward(request, response);
         }
+    }
+    private void mesArticles(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession session = req.getSession(false);
+        Long authorIdLong = (Long) session.getAttribute("authorId");
+        if (authorIdLong == null) {
+            resp.sendRedirect(req.getContextPath() + "/");
+            return;
+        }
+        int authorId = authorIdLong.intValue();
+
+
+        List<Article> mesArticles = articleService.getArticlesByAuthorId(authorId);
+        req.setAttribute("articles", mesArticles);
+        RequestDispatcher view = req.getRequestDispatcher("/articles/mes-articles.jsp");
+        view.forward(req, resp);
     }
 
     private void viewArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
