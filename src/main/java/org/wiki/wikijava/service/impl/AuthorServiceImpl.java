@@ -60,7 +60,13 @@ public class AuthorServiceImpl implements AuthorService {
     public boolean deleteAuthor(long id) {
         return authorRepository.delete(id);
     }
-    public Author getAuthorByEmail(String email) {
-        return authorRepository.findByEmail(email);
+    @Override
+    public Author authenticate(String email) {
+        Author author = authorRepository.findByEmail(email);
+
+        if (author != null) {
+            return author;
+        }
+        return null;
     }
 }

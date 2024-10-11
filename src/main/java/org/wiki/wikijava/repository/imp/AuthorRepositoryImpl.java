@@ -3,10 +3,7 @@ package org.wiki.wikijava.repository.imp;
 import org.wiki.wikijava.entity.Author;
 import org.wiki.wikijava.repository.AuthorRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 public class AuthorRepositoryImpl implements AuthorRepository {
@@ -78,8 +75,17 @@ public class AuthorRepositoryImpl implements AuthorRepository {
             return false;
         }
     }
+
+
     @Override
     public Author findByEmail(String email) {
-        return null;
+        try {
+            TypedQuery<Author> query = entityManager.createQuery("SELECT a FROM Author a WHERE a.email = :email", Author.class);
+            query.setParameter("email", email);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
+
 }
