@@ -38,7 +38,7 @@ public class Article {
 
     @OneToMany(mappedBy = "article" , cascade = CascadeType.ALL)
     private List<Comment> comments;
-
+    
     public int getId() {
         return id;
     }
