@@ -6,13 +6,13 @@
 
     <!-- Configuration du servlet -->
     <servlet>
-        <servlet-name>testServlet</servlet-name>
-        <servlet-class>org.wiki.wikijava.servlet.TestServlet</servlet-class>
+        <servlet-name>articleServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.ArticleServlet</servlet-class>
     </servlet>
 
     <!-- Mapping du servlet -->
     <servlet-mapping>
-        <servlet-name>testServlet</servlet-name>
-        <url-pattern>/test</url-pattern>
+        <servlet-name>articleServlet</servlet-name>
+        <url-pattern>/articles</url-pattern>
     </servlet-mapping>
 </web-app>

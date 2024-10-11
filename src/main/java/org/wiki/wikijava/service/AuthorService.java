@@ -1,4 +1,4 @@
 package org.wiki.wikijava.service;
 
-public class AuthorService {
+public interface AuthorService {
 }

@@ -1,4 +1,4 @@
 package org.wiki.wikijava.service;
 
-public class CommentService {
+public interface CommentService {
 }
