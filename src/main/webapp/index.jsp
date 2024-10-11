@@ -15,7 +15,7 @@
             <h1 class="text-2xl font-semibold mb-4 text-center">Bienvenue dans notre blog platform</h1>
             <p class="text-center mb-6 text-gray-600">Entrez ton email s'il vous plait pour te connecter</p>
 
-            <form action="/login" method="POST" class="space-y-4">
+            <form action="<%= request.getContextPath() %>/auth" method="post" class="space-y-4">
                 <div>
                     <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
                     <input type="email" id="email" name="email" placeholder="Email"
@@ -27,6 +27,12 @@
                     </button>
                 </div>
             </form>
+        </div>
+        <div>
+            <p class="text-red-500">
+                <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+                <%= errorMessage != null ? errorMessage : "" %>
+            </p>
         </div>
 
         <!-- Right Section: Image -->

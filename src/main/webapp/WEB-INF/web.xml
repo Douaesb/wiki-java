@@ -15,4 +15,14 @@
         <servlet-name>articleServlet</servlet-name>
         <url-pattern>/articles</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AuthentificationServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.AuthServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AuthentificationServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
 </web-app>
