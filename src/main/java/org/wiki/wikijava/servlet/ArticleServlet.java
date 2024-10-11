@@ -1,11 +1,15 @@
 package org.wiki.wikijava.servlet;
 
 import org.wiki.wikijava.entity.Article;
+import org.wiki.wikijava.entity.Comment;
 import org.wiki.wikijava.entity.Editor;
 import org.wiki.wikijava.entity.enums.StatusArticle;
 import org.wiki.wikijava.repository.imp.ArticleRepositoryImpl;
+import org.wiki.wikijava.repository.imp.CommentRepositoryImpl;
 import org.wiki.wikijava.service.ArticleService;
+import org.wiki.wikijava.service.CommentService;
 import org.wiki.wikijava.service.impl.ArticleServiceImpl;
+import org.wiki.wikijava.service.impl.CommentServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +24,7 @@ import java.util.List;
 public class ArticleServlet extends HttpServlet {
     private static  final long serialVersionUID = 1L;
     private ArticleService articleService;
+    private CommentService commentService;
 
     public ArticleServlet() {
         super();
@@ -32,6 +37,7 @@ public class ArticleServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         articleService = new ArticleServiceImpl(new ArticleRepositoryImpl());
+        commentService = new CommentServiceImpl(new CommentRepositoryImpl());
 
     }
     @Override
@@ -43,6 +49,9 @@ public class ArticleServlet extends HttpServlet {
         switch (action) {
             case "list":
                 listArticles(req, resp);
+                break;
+            case "view":
+                viewArticle(req, resp);
                 break;
             default:
                 System.out.println("Unknown action: " + action);
@@ -104,6 +113,26 @@ public class ArticleServlet extends HttpServlet {
             RequestDispatcher view = request.getRequestDispatcher("/articles");
             view.forward(request, response);
         }
+    }
+
+    private void viewArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Long articleId = Long.parseLong(req.getParameter("id"));
+        Article article = articleService.getArticle(articleId);
+
+        if (article == null) {
+            req.setAttribute("errorMessage", "Article not found.");
+            resp.sendRedirect(req.getContextPath() + "/articles?action=list");
+            return;
+        }
+
+        req.setAttribute("article", article);
+        List<Comment> comments = commentService.getCommentsByArticleId(articleId);
+        req.setAttribute("comments", comments);
+
+        System.out.println("Action 'view' triggered for article ID: " + articleId);
+
+        RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/views/comment/show.jsp");
+        view.forward(req, resp);
     }
 
 

@@ -57,5 +57,19 @@ public class CommentRepositoryImpl implements CommentRepository {
         em.close();
     }
 
+    @Override
+    public List<Comment> findByArticleId(Long articleId) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            return em.createQuery("SELECT c FROM Comment c WHERE c.article.id = :articleId", Comment.class)
+                    .setParameter("articleId", articleId)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+
+
 
 }

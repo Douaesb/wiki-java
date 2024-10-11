@@ -48,7 +48,7 @@ public class CommentServlet extends HttpServlet {
 
         String content = req.getParameter("content");
 
-        int articleId = Integer.parseInt(req.getParameter("articleId"));
+        long articleId = Long.parseLong(req.getParameter("articleId"));
         long contributorId = Long.parseLong(req.getParameter("contributorId"));
         LocalDate currentDate = LocalDate.now();
         StatusComment status = StatusComment.PENDING;
@@ -65,7 +65,7 @@ public class CommentServlet extends HttpServlet {
         comment.setArticle(article);
         comment.setContributor(contributor);
         commentService.saveComment(comment);
-        resp.sendRedirect(req.getContextPath() +"/comments");
+        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId);
     }
 
     private void updateComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {

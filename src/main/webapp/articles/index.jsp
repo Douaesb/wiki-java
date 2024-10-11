@@ -49,7 +49,7 @@
                 <h3 class="text-xl font-semibold mt-4">${article.title}</h3>
                 <p class="text-gray-500 text-sm">Abdellah</p>
                 <p class="text-gray-600 mt-2">${article.contenu}</p>
-                <a href="#" class="text-blue-500 hover:underline mt-4 block">View more</a>
+                <a href="articles?action=view&id=${article.id}" class="text-blue-500 hover:underline mt-4 block">View more</a>
             </div>
         </c:forEach>
     </div>

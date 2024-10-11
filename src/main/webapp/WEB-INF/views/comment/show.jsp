@@ -14,26 +14,25 @@
 
 <!-- Back Arrow Section -->
 <div class="flex flex-row w-3/6 mt-12">
-    <a href="#" class="text-blue-500 hover:text-blue-700">
-        <img src="../../img/back-arrow.png" alt="Article Image" class=" w-8">
+    <a href="${pageContext.request.contextPath}/articles" class="text-blue-500 hover:text-blue-700">
+        <img src=" https://res.cloudinary.com/dz4pww2qv/image/upload/v1728637987/wmp85euw48itmvuwfbni.png" alt="Article Image" class=" w-8">
     </a>
 </div>
 
 <!-- Title Section -->
-<h1 class="text-center text-3xl font-bold w-3/6 mt-6">Slowing growth in life expectancy means few people will live to 100</h1>
+<h1 class="text-center text-3xl font-bold w-3/6 mt-6">${article.title}</h1>
 
 <!-- Author Section -->
-<p class=" flex flex-row w-3/6 text-gray-600 mt-4 ml-4">by Author Name | a min ago </p>
+<p class=" flex flex-row w-3/6 text-gray-600 mt-4 ml-4">${article.editor.nom} ${article.editor.prenom} | ${article.creationDate}</p>
 
 <!-- Image Section -->
 <div class="mt-6">
-    <img src="../../img/newspaper-background.png" alt="Article Image" class="rounded-lg shadow-md w-full max-w-2xl">
+    <img src="https://res.cloudinary.com/dz4pww2qv/image/upload/v1728568781/bqxhpotosrxbg9eqgcgc.png" alt="Article Image" class="rounded-lg shadow-md w-full max-w-2xl">
 </div>
 
 <!-- Article Content -->
 <div class="flex flex-col  items-center mt-6 w-full max-w-3xl text-left">
-    <p class="text-gray-800 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula nibh, interdum non enim sit amet, iaculis aliquet nunc. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam sit amet ipsum ac velit egestas ultrices. Vestibulum et neque id ex semper varius a sit amet metus. Vivamus congue dolor eget aliquam hendrerit. Etiam iaculis finibus egestas. Nam viverra urna quis odio efficitur malesuada. Maecenas rhoncus enim eu scelerisque rutrum. Pellentesque et mollis enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed commodo leo. Suspendisse potenti. Maecenas gravida ipsum placerat ligula posuere, ut rhoncus velit eleifend.</p>
-    <p class="text-gray-800 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula nibh, interdum non enim sit amet, iaculis aliquet nunc. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam sit amet ipsum ac velit egestas ultrices. Vestibulum et neque id ex semper varius a sit amet metus. Vivamus congue dolor eget aliquam hendrerit. Etiam iaculis finibus egestas. Nam viverra urna quis odio efficitur malesuada. Maecenas rhoncus enim eu scelerisque rutrum. Pellentesque et mollis enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed commodo leo. Suspendisse potenti. Maecenas gravida ipsum placerat ligula posuere, ut rhoncus velit eleifend.</p>
+    <p class="text-gray-800 mb-4">${article.contenu}</p>
 
 </div>
 
@@ -43,16 +42,16 @@
     <div class="flex justify-between w-full items-start">
 
 
-    <div class="flex gap-2">
-        <h2 class="text-xl font-semibold">Comments</h2>
-        <span class="text-xl font-semibold">(40)</span>
-    </div>
+        <div class="flex gap-2">
+            <h2 class="text-xl font-semibold">Comments</h2>
+            <span class="text-xl font-semibold">(40)</span>
+        </div>
 
-    <div class="flex gap-6 pb-3">
-        <button class="rounded-lg border border-gray-500 p-2">All comments</button>
-        <button class="bg-gray-500 rounded-lg p-2">My comments</button>
+        <div class="flex gap-6 pb-3">
+            <button class="rounded-lg border border-gray-500 p-2">All comments</button>
+            <button class="bg-gray-500 rounded-lg p-2">My comments</button>
 
-    </div>
+        </div>
     </div>
 
     <div class="w-full shadow-lg border border-gray-300 rounded-md p-2 mt-2">
@@ -60,7 +59,7 @@
             <label>
                 <textarea name="content" class="w-5/6 border-none focus:border-none" rows="1" placeholder="Add a comment..." required></textarea>
             </label>
-            <input type="hidden" name="articleId" value="1">
+            <input type="hidden" name="articleId" value="${article.id}">
             <input type="hidden" name="contributorId" value="2">
             <button type="submit" class="ml-3 bg-gray-500 rounded-lg p-2 text-white">Publish</button>
         </form>
@@ -71,32 +70,32 @@
 
         <c:forEach var="comment" items="${comments}">
 
-    <div class="w-full shadow-lg border border-gray-300 rounded-md p-2 mt-2">
-        <div class="flex justify-between w-full pt-3">
-            <div class=" flex w-full gap-3">
-                <img src="https://res.cloudinary.com/dz4pww2qv/image/upload/v1728568781/bqxhpotosrxbg9eqgcgc.png" alt="Article Image" class="rounded-full h-10 w-10">
-                <span class="mt-1 text-center items-center"> ${comment.contributor.nom} ${comment.contributor.prenom} * <span class="mt-1 text-center items-center">${comment.creationDate}</span>
+            <div class="w-full shadow-lg border border-gray-300 rounded-md p-2 mt-2">
+                <div class="flex justify-between w-full pt-3">
+                    <div class=" flex w-full gap-3">
+                        <img src="https://res.cloudinary.com/dz4pww2qv/image/upload/v1728568781/bqxhpotosrxbg9eqgcgc.png" alt="Article Image" class="rounded-full h-10 w-10">
+                        <span class="mt-1 text-center items-center"> ${comment.contributor.nom} ${comment.contributor.prenom} * <span class="mt-1 text-center items-center">${comment.creationDate}</span>
 </span>
 
-            </div>
-            <div class="icons flex gap-3 mt-2">
-                <div data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="showModal" data-id="<c:out value='${comment.id}' />"
-                     data-content="<c:out value='${comment.content}' />">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="m3.99 16.854-1.314 3.504a.75.75 0 0 0 .966.965l3.503-1.314a3 3 0 0 0 1.068-.687L18.36 9.175s-.354-1.061-1.414-2.122c-1.06-1.06-2.122-1.414-2.122-1.414L4.677 15.786a3 3 0 0 0-.687 1.068zm12.249-12.63 1.383-1.383c.248-.248.579-.406.925-.348.487.08 1.232.322 1.934 1.025.703.703.945 1.447 1.025 1.934.058.346-.1.677-.348.925L19.774 7.76s-.353-1.06-1.414-2.12c-1.06-1.062-2.121-1.415-2.121-1.415z" fill="#000000"></path></g></svg>
-                </div>
-                <form action="comments?action=delete" method="post">
-                    <input type="hidden" name="commentId" value="${comment.id}">
-                    <button type="submit" onclick="return confirm('Are you sure you want to delete this comment?');">
-                        <svg class="w-6 h-6" fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
-                        </svg>
-                    </button>
-                </form>
+                    </div>
+                    <div class="icons flex gap-3 mt-2">
+                        <div data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="showModal" data-id="<c:out value='${comment.id}' />"
+                             data-content="<c:out value='${comment.content}' />">
+                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="m3.99 16.854-1.314 3.504a.75.75 0 0 0 .966.965l3.503-1.314a3 3 0 0 0 1.068-.687L18.36 9.175s-.354-1.061-1.414-2.122c-1.06-1.06-2.122-1.414-2.122-1.414L4.677 15.786a3 3 0 0 0-.687 1.068zm12.249-12.63 1.383-1.383c.248-.248.579-.406.925-.348.487.08 1.232.322 1.934 1.025.703.703.945 1.447 1.025 1.934.058.346-.1.677-.348.925L19.774 7.76s-.353-1.06-1.414-2.12c-1.06-1.062-2.121-1.415-2.121-1.415z" fill="#000000"></path></g></svg>
+                        </div>
+                        <form action="comments?action=delete" method="post">
+                            <input type="hidden" name="commentId" value="${comment.id}">
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this comment?');">
+                                <svg class="w-6 h-6" fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
+                                </svg>
+                            </button>
+                        </form>
 
+                    </div>
+                </div>
+                <p class="pt-4">${comment.content}</p>
             </div>
-        </div>
-        <p class="pt-4">${comment.content}</p>
-    </div>
         </c:forEach>
     </div>
 
