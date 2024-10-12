@@ -82,6 +82,12 @@ public class ArticleServlet extends HttpServlet {
                 case "insert":
                     insertArticle(request, response);
                     break;
+                case "update":
+                    updateArticle(request, response);
+                    break;
+                case "delete":
+                    deleteArticle(request, response);
+                    break;
                 default:
                     listArticles(request, response);
                     break;
@@ -216,5 +222,82 @@ public class ArticleServlet extends HttpServlet {
 
 
 
+
+    private void updateArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long articleIdParam = Long.parseLong(request.getParameter("articleId"));
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+
+        if (articleIdParam == 0 || title == null || content == null || title.isEmpty() || content.isEmpty()) {
+            request.setAttribute("errorMessage", "Article ID, title, and content are required.");
+            RequestDispatcher view = request.getRequestDispatcher("/articles");
+            view.forward(request, response);
+            return;
+        }
+
+        try {
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Invalid article ID format.");
+            RequestDispatcher view = request.getRequestDispatcher("/articles");
+            view.forward(request, response);
+            return;
+        }
+
+        // Fetching the article by its ID
+        Article existingArticle = articleService.getArticle(articleIdParam);
+        if (existingArticle == null) {
+            request.setAttribute("errorMessage", "Article not found.");
+            RequestDispatcher view = request.getRequestDispatcher("/articles");
+            view.forward(request, response);
+            return;
+        }
+
+
+        existingArticle.setTitle(title);
+        existingArticle.setContenu(content);
+        existingArticle.setPublicationDate(LocalDateTime.now());
+
+        try {
+            articleService.updateArticle(existingArticle);
+            response.sendRedirect(request.getContextPath() + "/articles?action=malist");
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", "An error occurred while updating the article: " + e.getMessage());
+            RequestDispatcher view = request.getRequestDispatcher("/articles");
+            view.forward(request, response);
+        }
+    }
+    private void deleteArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long articleIdParam = Long.parseLong(request.getParameter("articleId"));
+
+        if (articleIdParam == 0) {
+            request.setAttribute("errorMessage", "Article ID is required to delete an article.");
+            RequestDispatcher view = request.getRequestDispatcher("/articles");
+            view.forward(request, response);
+            return;
+        }
+
+        try {
+            Article articleToDelete = articleService.getArticle(articleIdParam);
+            if (articleToDelete == null) {
+                request.setAttribute("errorMessage", "Article not found.");
+                RequestDispatcher view = request.getRequestDispatcher("/articles");
+                view.forward(request, response);
+                return;
+            }
+
+            articleService.deleteArticle(articleIdParam);
+            response.sendRedirect(request.getContextPath() + "/articles?action=malist");
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Invalid article ID format.");
+            RequestDispatcher view = request.getRequestDispatcher("/articles");
+            view.forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", "An error occurred while deleting the article: " + e.getMessage());
+            RequestDispatcher view = request.getRequestDispatcher("/articles");
+            view.forward(request, response);
+        }
+    }
 
 }

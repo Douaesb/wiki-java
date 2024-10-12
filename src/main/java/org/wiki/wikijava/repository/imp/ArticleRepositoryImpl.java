@@ -26,7 +26,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public Article findById(long id) {
+    public Article findById(Long id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Article article = entityManager.find(Article.class, id);
@@ -48,7 +48,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
@@ -83,7 +83,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Editor editor = null;
         try {
-            TypedQuery<Editor> query = entityManager.createQuery("SELECT e FROM Auteur e WHERE e.id = :id", Editor.class);
+            TypedQuery<Editor> query = entityManager.createQuery("SELECT e FROM Author e WHERE e.id = :id", Editor.class);
             query.setParameter("id", id);
             editor = query.getSingleResult();
         } catch (NoResultException e) {
