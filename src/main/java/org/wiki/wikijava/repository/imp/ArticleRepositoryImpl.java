@@ -2,6 +2,7 @@ package org.wiki.wikijava.repository.imp;
 
 import org.wiki.wikijava.entity.Article;
 import org.wiki.wikijava.entity.Editor;
+import org.wiki.wikijava.entity.enums.StatusArticle;
 import org.wiki.wikijava.repository.ArticleRepository;
 
 import javax.persistence.*;
@@ -37,12 +38,21 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<Article> findAll(int offset, int pageSize) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            List<Article> articles =  entityManager.createQuery("SELECT a FROM Article a", Article.class).getResultList();
+
+            String jpql = "SELECT a FROM Article a JOIN a.editor WHERE a.statusArticle = :status";
+
+            // Retrieve the articles
+            List<Article> articles = entityManager.createQuery(jpql, Article.class)
+                    .setParameter("status", StatusArticle.PUBLISHED)
+                    .setFirstResult(offset)
+                    .setMaxResults(pageSize)
+                    .getResultList();
+
             return Collections.unmodifiableList(articles);
-        }finally {
+        } finally {
             entityManager.close();
         }
     }
@@ -116,6 +126,43 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findByTitle(String title) {
-        return Collections.emptyList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+
+            return entityManager.createQuery("SELECT a FROM Article a WHERE a.title LIKE :title", Article.class)
+                    .setParameter("title", "%" + title + "%") // Using LIKE for partial matching
+                    .getResultList();
+        } finally {
+            entityManager.close();
+        }
     }
+
+    @Override
+    public int countAllArticles() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+
+            Long count = entityManager.createQuery("SELECT COUNT(a) FROM Article a WHERE a.statusArticle = :status", Long.class)
+                    .setParameter("status", StatusArticle.PUBLISHED)
+                    .getSingleResult();
+
+            return Math.toIntExact(count);
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public Long countCommentsByArticleId(Long articleId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            // JPQL query to count comments for a specific article
+            String jpql = "SELECT COUNT(c) FROM Comment c WHERE c.article.id = :articleId";
+            return entityManager.createQuery(jpql, Long.class)
+                    .setParameter("articleId", articleId)
+                    .getSingleResult();
+        } finally {
+            entityManager.close();
+        }
+    }
+
 }

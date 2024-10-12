@@ -20,7 +20,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ArticleServlet extends HttpServlet {
     private static  final long serialVersionUID = 1L;
@@ -42,7 +44,7 @@ public class ArticleServlet extends HttpServlet {
 
     }
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("authorName") == null) {
             resp.sendRedirect(req.getContextPath() + "/");
@@ -61,6 +63,8 @@ public class ArticleServlet extends HttpServlet {
                 break;
             case "view":
                 viewArticle(req, resp);
+            case "search":
+                searchArticles(req, resp);
                 break;
             default:
                 System.out.println("Unknown action: " + action);
@@ -69,7 +73,7 @@ public class ArticleServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("authorName") == null) {
             response.sendRedirect(request.getContextPath() + "/");
@@ -96,16 +100,53 @@ public class ArticleServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+    private void searchArticles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String query = request.getParameter("query");
+        if (query == null || query.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid search query");
+            return;
+        }
+
+        List<Article> searchResults = articleService.searchArticle(query);
+        if (searchResults.isEmpty()) {
+            request.setAttribute("message", "No articles found with the query: " + query);
+        } else {
+            request.setAttribute("articles", searchResults);
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/articles/index.jsp");
+        dispatcher.forward(request, response);
+    }
     private void listArticles(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Article> articles = articleService.getArticles();
-        req.setAttribute("articles", articles);
+        int page = 1;
+        int pageSize = 3;
+
+        if (req.getParameter("page") != null) {
+            page = Integer.parseInt(req.getParameter("page"));
+        }
+        List<Article> articles = articleService.getArticles(page, pageSize);
+        Map<Article, Integer> articleWithCommentCounts = new HashMap<>();
+
+        for (Article article : articles) {
+            int commentCount = articleService.countCommentsByArticleId(article.getId());
+            articleWithCommentCounts.put(article, commentCount);
+        }
+
+        // Get total number of articles for pagination
+        int totalArticles = articleService.getTotalArticlesCount();
+        int totalPages = (int) Math.ceil(totalArticles / (double) pageSize);
+
+        // Set attributes to pass to the view
+        req.setAttribute("articleWithCommentCounts", articleWithCommentCounts); // Pass articles with comment counts
+        req.setAttribute("currentPage", page);
+        req.setAttribute("totalPages", totalPages);
+
         RequestDispatcher view = req.getRequestDispatcher("/articles/index.jsp");
         view.forward(req, resp);
     }
 
 
 
-    private void insertArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void insertArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         int editor_id = Integer.parseInt(request.getParameter("editor_id"));
@@ -147,7 +188,13 @@ public class ArticleServlet extends HttpServlet {
 
 
         List<Article> mesArticles = articleService.getArticlesByAuthorId(authorId);
-        req.setAttribute("articles", mesArticles);
+        Map<Article, Integer> articleWithCommentCounts = new HashMap<>();
+
+        for (Article article : mesArticles) {
+            int commentCount = articleService.countCommentsByArticleId(article.getId());
+            articleWithCommentCounts.put(article, commentCount);
+        }
+        req.setAttribute("articleWithCommentCounts", articleWithCommentCounts);
         RequestDispatcher view = req.getRequestDispatcher("/articles/mes-articles.jsp");
         view.forward(req, resp);
     }
@@ -194,7 +241,6 @@ public class ArticleServlet extends HttpServlet {
         List<Comment> comments = commentService.getCommentsByArticleId(articleId, page, pageSize);
         req.setAttribute("comments", comments);
 
-        // Get total number of comments for pagination
         Long totalComments = commentService.getCommentCountByArticleId(articleId);
         req.setAttribute("totalComments", totalComments);
 
@@ -300,4 +346,7 @@ public class ArticleServlet extends HttpServlet {
         }
     }
 
+    public void setArticleService(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 }

@@ -11,8 +11,9 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     public ArticleServiceImpl(ArticleRepository articleRepository) { this.articleRepository = articleRepository;}
     @Override
-    public List<Article> getArticles() {
-        return articleRepository.findAll();
+    public List<Article> getArticles(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return articleRepository.findAll( offset,pageSize);
     }
 
     @Override
@@ -49,5 +50,15 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> getArticlesByAuthorId(int authorId) {
         return articleRepository.getArticlesByAuthorId(authorId);
+    }
+
+    @Override
+    public int getTotalArticlesCount() {
+        return articleRepository.countAllArticles();
+    }
+
+    @Override
+    public int countCommentsByArticleId(Long id) {
+        return Math.toIntExact(articleRepository.countCommentsByArticleId(id));
     }
 }
