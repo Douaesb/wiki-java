@@ -23,7 +23,7 @@
 <h1 class="text-center text-3xl font-bold w-3/6 mt-6">${article.title}</h1>
 
 <!-- Author Section -->
-<p class=" flex flex-row w-3/6 text-gray-600 mt-4 ml-4">${article.editor.nom} ${article.editor.prenom} | ${article.creationDate}</p>
+<p class=" flex flex-row w-3/6 text-gray-600 mt-4 ml-4">${article.editor.firstName} ${article.editor.lastName} | ${article.creationDate}</p>
 
 <!-- Image Section -->
 <div class="mt-6">
@@ -47,25 +47,34 @@
         <div class="flex gap-6 pb-3">
             <button id="all-comments" class="bg-gray-500 rounded-lg p-2 text-white"
                      >All comments</button>
-            <button id="my-comments" class="rounded-lg border border-gray-500 p-2 active-button"
+<c:if test="${sessionScope.authorRole == 'CONTRIBUTOR'}">
+
+<button id="my-comments" class="rounded-lg border border-gray-500 p-2 active-button"
                    >
                 My comments
             </button>
+</c:if>
+
         </div>
     </div>
 
     <!-- All Comments Section -->
+
     <div id="all-comments-section" class="w-full rounded-md p-2 mt-2">
-        <div class="shadow-lg border border-gray-300 p-2 rounded-md">
+<c:if test="${sessionScope.authorRole == 'CONTRIBUTOR'}">
+
+<div class="shadow-lg border border-gray-300 p-2 rounded-md">
             <form action="comments?action=create" method="POST">
                 <label>
                     <textarea name="content" class="w-5/6 border-none focus:border-none " rows="1" placeholder="Add a comment..." required></textarea>
                 </label>
                 <input type="hidden" name="articleId" value="${article.id}">
-                <input type="hidden" name="contributorId" value="2">
+                <input type="hidden" name="contributorId" value="${sessionScope.authorId}">
                 <button type="submit" class="ml-3 bg-gray-500 rounded-lg p-2 text-white mb-3">Publish</button>
             </form>
         </div>
+</c:if>
+
 
 
         <div class="mb-6">
@@ -75,7 +84,7 @@
                         <div class="flex w-full gap-3">
                             <img src="https://res.cloudinary.com/dz4pww2qv/image/upload/v1728568781/bqxhpotosrxbg9eqgcgc.png" alt="Article Image" class="rounded-full h-10 w-10">
                             <span class="mt-1 text-center items-center">
-                                ${comment.contributor.nom} ${comment.contributor.prenom} * <span class="mt-1 text-center items-center">${comment.creationDate}</span>
+                                ${comment.contributor.firstName} ${comment.contributor.lastName} * <span class="mt-1 text-center items-center">${comment.creationDate}</span>
                             </span>
                         </div>
 
@@ -134,7 +143,7 @@
                         <div class="flex w-full gap-3">
                             <img src="https://res.cloudinary.com/dz4pww2qv/image/upload/v1728568781/bqxhpotosrxbg9eqgcgc.png" alt="Article Image" class="rounded-full h-10 w-10">
                             <span class="mt-1 text-center items-center">
-                                ${myComment.contributor.nom} ${myComment.contributor.prenom} * <span class="mt-1 text-center items-center">${myComment.creationDate}</span>
+                                ${myComment.contributor.firstName} ${myComment.contributor.lastName} * <span class="mt-1 text-center items-center">${myComment.creationDate}</span>
                             </span>
                         </div>
                         <div class="icons flex gap-3 mt-2">
@@ -145,6 +154,8 @@
                             <form action="comments?action=delete" method="post">
                                 <input type="hidden" name="commentId" value="${myComment.id}">
                                 <input type="hidden" name="articleId" value="${article.id}">
+                                <input type="hidden" name="contributorId" value="${sessionScope.authorId}">
+
                                 <button type="submit" onclick="return confirm('Are you sure you want to delete this comment?');">
                                     <svg class="w-6 h-6" fill="#000000" viewBox="0 0 24 24">
                                         <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
@@ -219,7 +230,7 @@
                         <div class="col-span-2">
                             <input type="hidden" name="id" id="editId" required>
                             <input type="hidden" name="articleId" id="articleId" required>
-
+                            <input type="hidden" name="contributorId" value="${sessionScope.authorId}">
                             <label for="description"></label>
                             <textarea id="description" name="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product description here"></textarea>
                         </div>

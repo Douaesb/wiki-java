@@ -196,11 +196,18 @@ public class ArticleServlet extends HttpServlet {
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("currentPage", page);
 
-        Long staticContributorId = 2L;
-        List<Comment> myComments = commentService.getCommentsByArticleAndContributor(articleId, staticContributorId);
-        req.setAttribute("myComments", myComments);
+        String contributorIdStr = req.getParameter("contributeur");
+            try {
+                Long contributorId = Long.parseLong(contributorIdStr);
+                System.out.println("Contributor ID (Long): " + contributorId);
+                List<Comment> myComments = commentService.getCommentsByArticleAndContributor(articleId, contributorId);
+                req.setAttribute("myComments", myComments);
+                System.out.println("mes commentaires"+myComments);
 
-        System.out.println("my comments: " + myComments);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid contributor ID format: " + contributorIdStr);
+                req.setAttribute("errorMessage", "Invalid contributor ID format.");
+            }
 
         RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/views/comment/show.jsp");
         view.forward(req, resp);

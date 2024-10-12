@@ -65,7 +65,7 @@ public class CommentServlet extends HttpServlet {
         comment.setArticle(article);
         comment.setContributor(contributor);
         commentService.saveComment(comment);
-        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId);
+        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId + "&contributeur=" + contributorId);
     }
 
     private void updateComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -74,18 +74,21 @@ public class CommentServlet extends HttpServlet {
         String content = req.getParameter("content");
         Comment comment = commentService.findCommentById(id);
         long articleId = Long.parseLong(req.getParameter("articleId"));
+        long contributorId = Long.parseLong(req.getParameter("contributorId"));
 
         comment.setContent(content);
         commentService.updateComment(comment);
 
-        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId);
+        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId + "&contributeur=" + contributorId);
     }
 
     private void deleteComment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Long id = Long.parseLong(req.getParameter("commentId"));
         long articleId = Long.parseLong(req.getParameter("articleId"));
+        long contributorId = Long.parseLong(req.getParameter("contributorId"));
+
         commentService.deleteComment(id);
-        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId);
+        resp.sendRedirect(req.getContextPath() + "/articles?action=view&id=" + articleId + "&contributeur=" + contributorId);
     }
 
     @Override

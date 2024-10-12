@@ -62,6 +62,7 @@
 
     <!-- Article Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <input type="hidden" name="contributeur" value="${sessionScope.authorId}">
         <c:forEach var="article" items="${articles}">
             <div class="bg-white p-4 rounded shadow-md border">
                 <div class="h-48 bg-gray-300 overflow-hidden relative">
@@ -70,7 +71,7 @@
                 <h3 class="text-xl font-semibold mt-4">${article.title}</h3>
                 <p class="text-gray-500 text-sm">Abdellah</p>
                 <p class="text-gray-600 mt-2">${article.contenu}</p>
-                <a href="articles?action=view&id=${article.id}" class="text-blue-500 hover:underline mt-4 block">View more</a>
+                <a href="articles?action=view&id=${article.id}&contributeur=${sessionScope.authorId}" class="text-blue-500 hover:underline mt-4 block">View more</a>
             </div>
         </c:forEach>
     </div>

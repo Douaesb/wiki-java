@@ -23,6 +23,7 @@
     <servlet-mapping>
         <servlet-name>CommentServlet</servlet-name>
         <url-pattern>/comments</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
