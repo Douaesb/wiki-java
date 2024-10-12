@@ -42,6 +42,7 @@ public class AddAuthorServlet extends HttpServlet {
 
         try {
             authorService.addAuthor(firstName, lastName, email, role, birthDate);
+            request.setAttribute("successMessages", "Author added successfully!");
             response.sendRedirect("Authors");
         } catch (IllegalArgumentException e) {
             request.setAttribute("error", e.getMessage());

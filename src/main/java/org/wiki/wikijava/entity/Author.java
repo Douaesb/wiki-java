@@ -3,6 +3,10 @@ package org.wiki.wikijava.entity;
 import org.wiki.wikijava.entity.enums.Role;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -16,18 +20,26 @@ public abstract class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "First name cannot be null")
+    @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotNull(message = "Last name cannot be null")
+    @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     @Column(name = "last_name")
     private String lastName;
 
+    @NotNull(message = "Email cannot be null")
+    @Email(message = "Email must be valid")
     @Column(name = "email", unique = true)
     private String email;
 
+    @Past(message = "Birth date must be in the past")
     @Column(name = "birth_date")
     private LocalDate dateOfBirth;
 
+    @NotNull(message = "Role cannot be null")
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;

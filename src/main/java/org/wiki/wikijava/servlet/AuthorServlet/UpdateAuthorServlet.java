@@ -40,9 +40,11 @@ public class UpdateAuthorServlet extends HttpServlet {
 
         try {
             authorService.updateAuthor(authorId, firstName, lastName, email, role, birthDate);
+            request.setAttribute("successMessage", "Author updated successfully.");
+
             response.sendRedirect("Authors");
         } catch (IllegalArgumentException e) {
-            request.setAttribute("error", e.getMessage());
+            request.setAttribute("error", "An unexpected error occurred. Please try again.");
             request.getRequestDispatcher("Authors");
 
         }

@@ -29,7 +29,7 @@ public class DeleteAuthorServlet extends HttpServlet {
         this.authorService = new AuthorServiceImpl(authorRepository);
     }
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String authorId = request.getParameter("id");
         if (authorId != null && !authorId.isEmpty()) {
             try {

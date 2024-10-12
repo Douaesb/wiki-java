@@ -33,7 +33,7 @@ public class AuthorListServlet extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int page = 1;
         int recordsPerPage = 2;
 
@@ -41,12 +41,16 @@ public class AuthorListServlet extends HttpServlet {
             page = Integer.parseInt(request.getParameter("page"));
         }
 
-        List<Author> authors = authorService.getAuthors(page, recordsPerPage);
-        int noOfPages = authorService.getNoOfPages(recordsPerPage);
+        try {
+            List<Author> authors = authorService.getAuthors(page, recordsPerPage);
+            int noOfPages = authorService.getNoOfPages(recordsPerPage);
 
-        request.setAttribute("authors", authors);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
+            request.setAttribute("authors", authors);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
+        } catch (Exception e) {
+            request.setAttribute("error", "Failed to retrieve authors: " + e.getMessage());
+        }
 
         request.getRequestDispatcher("WEB-INF/views/author/index.jsp").forward(request, response);
     }
