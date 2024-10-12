@@ -39,16 +39,20 @@
         </div>
     </div>
 </header>
+
+<div class="text-gray-600 text-lg mt-4">
+    <c:if test="${not empty sessionScope.authorName && not empty sessionScope.authorRole}">
+        Welcome, <strong>${sessionScope.authorName}</strong>! Your role: <strong>${sessionScope.authorRole}</strong>
+    </c:if>
+</div>
+
 <!-- Main Content -->
 <main class="max-w-7xl mx-auto mt-8 px-4">
     <h2 class="text-3xl font-semibold text-gray-800 mb-6">My Articles</h2>
 
     <!-- Article Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <c:forEach var="entry" items="${articleWithCommentCounts}">
-            <c:set var="article" value="${entry.key}" />
-            <c:set var="commentCount" value="${entry.value}" />
-
+        <c:forEach var="article" items="${articles}">
             <div class="bg-white p-4 rounded shadow-md border relative">
                 <div class="h-48 bg-gray-300 overflow-hidden relative">
                     <img src="https://res.cloudinary.com/dz4pww2qv/image/upload/v1728568781/bqxhpotosrxbg9eqgcgc.png"
@@ -56,9 +60,6 @@
                 </div>
                 <h3 class="text-xl font-semibold mt-4">${article.title}</h3>
                 <p class="text-gray-600 mt-2">${article.contenu}</p>
-
-                <!-- Display comment count -->
-                <p class="text-gray-600 mt-2">Comments: ${commentCount}</p>
 
                 <div class="icons flex gap-3 mt-2">
                     <!-- Edit Button -->
@@ -78,7 +79,7 @@
 
                     <!-- Delete Form -->
                     <form action="<%=request.getContextPath()%>/articles?action=delete" method="post" class="inline-flex items-center">
-                        <input type="hidden" name="articleId" value="${article.id}">
+                        <input type="hidden"  name="articleId" value="${article.id}">
                         <button
                                 type="submit"
                                 onclick="return confirm('Are you sure you want to delete this comment?');"
@@ -90,6 +91,7 @@
                         </button>
                     </form>
                 </div>
+
             </div>
         </c:forEach>
     </div>
@@ -99,22 +101,18 @@
 <div id="editArticleModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg shadow-lg w-1/3 p-6">
         <h2 class="text-2xl font-semibold mb-4">Edit Article</h2>
-        <form id="editArticleForm" action="<%=request.getContextPath()%>/articles?action=update" method="post" onsubmit="return validateEditForm()">
+        <form id="editArticleForm" action="<%=request.getContextPath()%>/articles?action=update" method="post">
             <!-- Fix the name attribute to match servlet parameter expectation -->
             <input type="hidden" id="articleId" name="articleId">
 
             <div class="mb-4">
                 <label for="edit_title" class="block text-gray-700">Title</label>
-                <input type="text" id="edit_title" name="title"
-                       class="w-full px-3 py-2 border rounded-md"
-                       required>
+                <input type="text" id="edit_title" name="title" class="w-full px-3 py-2 border rounded-md" required>
             </div>
 
             <div class="mb-4">
                 <label for="edit_content" class="block text-gray-700">Content</label>
-                <textarea id="edit_content" name="content" rows="4"
-                          class="w-full px-3 py-2 border rounded-md"
-                          required></textarea>
+                <textarea id="edit_content" name="content" rows="4" class="w-full px-3 py-2 border rounded-md" required></textarea>
             </div>
 
             <div class="flex justify-end space-x-2">
@@ -124,7 +122,6 @@
         </form>
     </div>
 </div>
-
 
 
 <!-- JavaScript to handle the edit modal -->
@@ -140,26 +137,6 @@
     function closeEditModal() {
         document.getElementById('editArticleModal').classList.add('hidden');
 
-    }
-
-    function validateEditForm() {
-        const title = document.getElementById('edit_title').value;
-        const content = document.getElementById('edit_content').value;
-
-
-        const titleRegex = /^[A-Za-z0-9\s]{1,100}$/;
-        if (!titleRegex.test(title)) {
-            alert("Title should be alphanumeric and up to 100 characters.");
-            return false; // Prevent form submission
-        }
-
-
-        if (content.length < 1 || content.length > 500) {
-            alert("Content should be between 1 and 500 characters.");
-            return false;
-        }
-
-        return true; 
     }
 </script>
 

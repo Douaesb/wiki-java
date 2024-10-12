@@ -13,18 +13,3 @@
 2024-10-12 20:19:30 [main] INFO  o.w.wikijava.servlet.CommentServlet - Comment with ID: 1 updated successfully.
 2024-10-12 20:19:30 [main] INFO  o.w.wikijava.servlet.CommentServlet - Handling GET request.
 2024-10-12 20:19:30 [main] INFO  o.w.wikijava.servlet.CommentServlet - Fetching all comments.
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Handling POST request with action: delete
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Deleting comment.
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Comment with ID: 1 deleted successfully.
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Handling POST request with action: unknown
-2024-10-12 20:52:41 [main] WARN  o.w.wikijava.servlet.CommentServlet - Unknown action: unknown
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Fetching all comments.
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Handling POST request with action: create
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Creating a new comment.
-2024-10-12 20:52:41 [main] DEBUG o.w.wikijava.servlet.CommentServlet - Comment details: org.wiki.wikijava.entity.Comment@7561db12
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Comment created successfully with ID: null
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Handling POST request with action: update
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Updating comment.
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Comment with ID: 1 updated successfully.
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Handling GET request.
-2024-10-12 20:52:41 [main] INFO  o.w.wikijava.servlet.CommentServlet - Fetching all comments.
