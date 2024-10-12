@@ -56,4 +56,9 @@ public class ArticleServiceImpl implements ArticleService {
     public int getTotalArticlesCount() {
         return articleRepository.countAllArticles();
     }
+
+    @Override
+    public int countCommentsByArticleId(int id) {
+        return Math.toIntExact(articleRepository.countCommentsByArticleId(id));
+    }
 }

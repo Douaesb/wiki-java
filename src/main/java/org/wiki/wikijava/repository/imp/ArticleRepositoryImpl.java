@@ -41,19 +41,18 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public List<Article> findAll(int offset, int pageSize) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            // Create the JPQL query to select all PUBLISHED articles with author details
-            String jpql = "SELECT a FROM Article a JOIN a.editor  WHERE a.statusArticle = :status";
 
+            String jpql = "SELECT a FROM Article a JOIN a.editor WHERE a.statusArticle = :status";
+
+            // Retrieve the articles
             List<Article> articles = entityManager.createQuery(jpql, Article.class)
                     .setParameter("status", StatusArticle.PUBLISHED)
                     .setFirstResult(offset)
                     .setMaxResults(pageSize)
                     .getResultList();
 
-            // Return the unmodifiable list to prevent modifications outside this method
             return Collections.unmodifiableList(articles);
         } finally {
-            // Ensure the EntityManager is closed to prevent resource leaks
             entityManager.close();
         }
     }
@@ -147,6 +146,19 @@ public class ArticleRepositoryImpl implements ArticleRepository {
                     .getSingleResult();
 
             return Math.toIntExact(count);
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public Long countCommentsByArticleId(int articleId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            // JPQL query to count comments for a specific article
+            String jpql = "SELECT COUNT(c) FROM Comment c WHERE c.article.id = :articleId";
+            return entityManager.createQuery(jpql, Long.class)
+                    .setParameter("articleId", articleId)
+                    .getSingleResult();
         } finally {
             entityManager.close();
         }

@@ -16,7 +16,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ArticleServlet extends HttpServlet {
     private static  final long serialVersionUID = 1L;
@@ -114,12 +116,22 @@ public class ArticleServlet extends HttpServlet {
             page = Integer.parseInt(req.getParameter("page"));
         }
         List<Article> articles = articleService.getArticles(page, pageSize);
+        Map<Article, Integer> articleWithCommentCounts = new HashMap<>();
 
+        for (Article article : articles) {
+            int commentCount = articleService.countCommentsByArticleId(article.getId()); // Fetch comment count
+            articleWithCommentCounts.put(article, commentCount);
+        }
+
+        // Get total number of articles for pagination
         int totalArticles = articleService.getTotalArticlesCount();
         int totalPages = (int) Math.ceil(totalArticles / (double) pageSize);
-        req.setAttribute("articles", articles);
+
+        // Set attributes to pass to the view
+        req.setAttribute("articleWithCommentCounts", articleWithCommentCounts); // Pass articles with comment counts
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
+
         RequestDispatcher view = req.getRequestDispatcher("/articles/index.jsp");
         view.forward(req, resp);
     }
@@ -168,7 +180,13 @@ public class ArticleServlet extends HttpServlet {
 
 
         List<Article> mesArticles = articleService.getArticlesByAuthorId(authorId);
-        req.setAttribute("articles", mesArticles);
+        Map<Article, Integer> articleWithCommentCounts = new HashMap<>();
+
+        for (Article article : mesArticles) {
+            int commentCount = articleService.countCommentsByArticleId(article.getId());
+            articleWithCommentCounts.put(article, commentCount);
+        }
+        req.setAttribute("articleWithCommentCounts", articleWithCommentCounts);
         RequestDispatcher view = req.getRequestDispatcher("/articles/mes-articles.jsp");
         view.forward(req, resp);
     }

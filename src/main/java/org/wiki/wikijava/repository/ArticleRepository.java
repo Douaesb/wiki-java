@@ -16,6 +16,6 @@ public interface ArticleRepository {
 
     Editor getEditorById(int id);
     List<Article> getArticlesByAuthorId(int id);
-
+    Long countCommentsByArticleId(int articleId);
     int countAllArticles();
 }

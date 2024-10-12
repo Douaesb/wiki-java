@@ -17,4 +17,6 @@ public interface ArticleService {
 
     List<Article> getArticlesByAuthorId(int authorId);
     int getTotalArticlesCount();
+
+    int countCommentsByArticleId(int id);
 }
