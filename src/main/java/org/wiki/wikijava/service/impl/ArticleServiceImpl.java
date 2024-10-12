@@ -5,7 +5,6 @@ import org.wiki.wikijava.entity.Editor;
 import org.wiki.wikijava.repository.ArticleRepository;
 import org.wiki.wikijava.service.ArticleService;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ArticleServiceImpl implements ArticleService {
@@ -17,7 +16,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getArticle(Long id) {
+    public Article getArticle(int id) {
         return articleRepository.findById(id);
     }
 
@@ -32,7 +31,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void deleteArticle(Long id) {
+    public void deleteArticle(int id) {
         articleRepository.delete(id);
 
     }

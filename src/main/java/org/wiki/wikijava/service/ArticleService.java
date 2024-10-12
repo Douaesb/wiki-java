@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface ArticleService {
     List<Article> getArticles();
-    Article getArticle(Long id);
+    Article getArticle(int id);
     void addArticle(Article article);
     void updateArticle(Article article);
-    void deleteArticle(Long id);
+    void deleteArticle(int id);
     List<Article> searchArticle(String term);
 
     Editor getEditorById(int i);

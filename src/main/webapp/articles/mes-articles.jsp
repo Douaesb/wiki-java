@@ -61,27 +61,37 @@
                 <h3 class="text-xl font-semibold mt-4">${article.title}</h3>
                 <p class="text-gray-600 mt-2">${article.contenu}</p>
 
-                <div class="flex items-center space-x-4">
-          
-                    <button
+                <div class="icons flex gap-3 mt-2">
+                    <!-- Edit Button -->
+                    <div
+                            data-modal-target="crud-modal"
+                            data-modal-toggle="crud-modal"
+                            class="showModal"
+                            data-id="<c:out value='${article.id}' />"
+                            data-content="<c:out value='${article.contenu}' />"
+                            data-articleid="<c:out value='${article.id}' />"
                             onclick="openEditModal('${article.title}', '${article.contenu}', ${article.id})"
-                            class="text-blue-500 hover:text-blue-700"
                     >
-                        Edit
-                    </button>
+                        <svg class="w-6 h-6 cursor-pointer text-blue-500 hover:text-blue-700" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3.99 16.854L2.685 20.358a.75.75 0 0 0 .966.965l3.503-1.314a3 3 0 0 0 1.068-.687L18.36 9.175s-.354-1.061-1.414-2.122c-1.06-1.06-2.122-1.414-2.122-1.414L4.677 15.786a3 3 0 0 0-.687 1.068zm12.249-12.63l1.383-1.383c.248-.248.579-.406.925-.348.487.08 1.232.322 1.934 1.025.703.703.945 1.447 1.025 1.934.058.346-.1.677-.348.925L19.774 7.76s-.353-1.06-1.414-2.12c-1.06-1.062-2.121-1.415-2.121-1.415z"></path>
+                        </svg>
+                    </div>
 
                     <!-- Delete Form -->
-                    <form action="<%=request.getContextPath()%>/articles?action=delete" method="post"
-                          class="inline-flex items-center">
-                        <input type="hidden" name="article_id" value="${article.id}">
+                    <form action="<%=request.getContextPath()%>/articles?action=delete" method="post" class="inline-flex items-center">
+                        <input type="hidden"  name="articleId" value="${article.id}">
                         <button
                                 type="submit"
+                                onclick="return confirm('Are you sure you want to delete this comment?');"
                                 class="text-red-500 hover:text-red-700"
                         >
-                            Delete
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M5.755,20.283,4,8H20L18.245,20.283A2,2,0,0,1,16.265,22H7.735A2,2,0,0,1,5.755,20.283ZM21,4H16V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V4H3A1,1,0,0,0,3,6H21a1,1,0,0,0,0-2Z"></path>
+                            </svg>
                         </button>
                     </form>
                 </div>
+
             </div>
         </c:forEach>
     </div>
@@ -92,44 +102,41 @@
     <div class="bg-white rounded-lg shadow-lg w-1/3 p-6">
         <h2 class="text-2xl font-semibold mb-4">Edit Article</h2>
         <form id="editArticleForm" action="<%=request.getContextPath()%>/articles?action=update" method="post">
-            <input type="hidden" id="article_id" name="article_id">
+            <!-- Fix the name attribute to match servlet parameter expectation -->
+            <input type="hidden" id="articleId" name="articleId">
+
             <div class="mb-4">
                 <label for="edit_title" class="block text-gray-700">Title</label>
-                <input type="text" id="edit_title" name="title"
-                       class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                       required>
+                <input type="text" id="edit_title" name="title" class="w-full px-3 py-2 border rounded-md" required>
             </div>
+
             <div class="mb-4">
                 <label for="edit_content" class="block text-gray-700">Content</label>
-                <textarea id="edit_content" name="content" rows="4"
-                          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          required></textarea>
+                <textarea id="edit_content" name="content" rows="4" class="w-full px-3 py-2 border rounded-md" required></textarea>
             </div>
+
             <div class="flex justify-end space-x-2">
-                <button type="button" onclick="closeEditModal()"
-                        class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500">Cancel
-                </button>
-                <button type="submit" class="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800">Update
-                    Article
-                </button>
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-400 text-white rounded-md">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-black text-white rounded-md">Update Article</button>
             </div>
         </form>
     </div>
 </div>
 
+
 <!-- JavaScript to handle the edit modal -->
 <script>
     function openEditModal(title, content, articleId) {
-
         document.getElementById('edit_title').value = title;
         document.getElementById('edit_content').value = content;
-        document.getElementById('article_id').value = articleId;
+        document.getElementById('articleId').value = articleId;  // Correct the 'articleId'
 
         document.getElementById('editArticleModal').classList.remove('hidden');
     }
 
     function closeEditModal() {
         document.getElementById('editArticleModal').classList.add('hidden');
+
     }
 </script>
 

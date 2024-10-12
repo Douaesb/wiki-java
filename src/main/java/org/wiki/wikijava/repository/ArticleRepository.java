@@ -8,9 +8,9 @@ import java.util.List;
 public interface ArticleRepository {
 
     void save(Article article);
-    Article findById(long id);
+    Article findById(int id);
     List<Article> findAll();
-    void delete(long id);
+    void delete(int id);
     void update(Article article);
     List<Article> findByTitle(String title);
 
