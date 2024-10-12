@@ -36,7 +36,7 @@ public class ArticleServlet extends HttpServlet {
 
     }
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("authorName") == null) {
             resp.sendRedirect(req.getContextPath() + "/");
@@ -53,6 +53,9 @@ public class ArticleServlet extends HttpServlet {
             case "malist":
                 mesArticles(req,resp);
                 break;
+            case "search":  // New search action
+                searchArticles(req, resp);
+                break;
             default:
                 System.out.println("Unknown action: " + action);
                 break;
@@ -60,7 +63,7 @@ public class ArticleServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("authorName") == null) {
             response.sendRedirect(request.getContextPath() + "/");
@@ -87,16 +90,43 @@ public class ArticleServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+    private void searchArticles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String query = request.getParameter("query");
+        if (query == null || query.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid search query");
+            return;
+        }
+
+        List<Article> searchResults = articleService.searchArticle(query);
+        if (searchResults.isEmpty()) {
+            request.setAttribute("message", "No articles found with the query: " + query);
+        } else {
+            request.setAttribute("articles", searchResults);
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/articles/index.jsp");
+        dispatcher.forward(request, response);
+    }
     private void listArticles(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Article> articles = articleService.getArticles();
+        int page = 1;
+        int pageSize = 3;
+
+        if (req.getParameter("page") != null) {
+            page = Integer.parseInt(req.getParameter("page"));
+        }
+        List<Article> articles = articleService.getArticles(page, pageSize);
+
+        int totalArticles = articleService.getTotalArticlesCount();
+        int totalPages = (int) Math.ceil(totalArticles / (double) pageSize);
         req.setAttribute("articles", articles);
+        req.setAttribute("currentPage", page);
+        req.setAttribute("totalPages", totalPages);
         RequestDispatcher view = req.getRequestDispatcher("/articles/index.jsp");
         view.forward(req, resp);
     }
 
 
 
-    private void insertArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void insertArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         int editor_id = Integer.parseInt(request.getParameter("editor_id"));
@@ -143,7 +173,7 @@ public class ArticleServlet extends HttpServlet {
         view.forward(req, resp);
     }
 
-    private void updateArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void updateArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int articleIdParam = Integer.parseInt(request.getParameter("articleId"));
         String title = request.getParameter("title");
         String content = request.getParameter("content");
@@ -187,7 +217,7 @@ public class ArticleServlet extends HttpServlet {
             view.forward(request, response);
         }
     }
-    private void deleteArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void deleteArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int articleIdParam = Integer.parseInt(request.getParameter("articleId"));
 
         if (articleIdParam == 0) {
@@ -218,5 +248,9 @@ public class ArticleServlet extends HttpServlet {
             RequestDispatcher view = request.getRequestDispatcher("/articles");
             view.forward(request, response);
         }
+    }
+
+    public void setArticleService(ArticleService articleService) {
+        this.articleService = articleService;
     }
 }

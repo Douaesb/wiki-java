@@ -2,6 +2,7 @@ package org.wiki.wikijava.repository.imp;
 
 import org.wiki.wikijava.entity.Article;
 import org.wiki.wikijava.entity.Editor;
+import org.wiki.wikijava.entity.enums.StatusArticle;
 import org.wiki.wikijava.repository.ArticleRepository;
 
 import javax.persistence.*;
@@ -37,16 +38,25 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<Article> findAll(int offset, int pageSize) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            List<Article> articles =  entityManager.createQuery("SELECT a FROM Article a", Article.class).getResultList();
+            // Create the JPQL query to select all PUBLISHED articles with author details
+            String jpql = "SELECT a FROM Article a JOIN a.editor  WHERE a.statusArticle = :status";
+
+            List<Article> articles = entityManager.createQuery(jpql, Article.class)
+                    .setParameter("status", StatusArticle.PUBLISHED)
+                    .setFirstResult(offset)
+                    .setMaxResults(pageSize)
+                    .getResultList();
+
+            // Return the unmodifiable list to prevent modifications outside this method
             return Collections.unmodifiableList(articles);
-        }finally {
+        } finally {
+            // Ensure the EntityManager is closed to prevent resource leaks
             entityManager.close();
         }
     }
-
     @Override
     public void delete(int id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -116,6 +126,30 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findByTitle(String title) {
-        return Collections.emptyList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+
+            return entityManager.createQuery("SELECT a FROM Article a WHERE a.title LIKE :title", Article.class)
+                    .setParameter("title", "%" + title + "%") // Using LIKE for partial matching
+                    .getResultList();
+        } finally {
+            entityManager.close();
+        }
     }
+
+    @Override
+    public int countAllArticles() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+
+            Long count = entityManager.createQuery("SELECT COUNT(a) FROM Article a WHERE a.statusArticle = :status", Long.class)
+                    .setParameter("status", StatusArticle.PUBLISHED)
+                    .getSingleResult();
+
+            return Math.toIntExact(count);
+        } finally {
+            entityManager.close();
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +19,7 @@
 
         <!-- Navbar Links -->
         <nav class="flex-grow flex justify-center space-x-12 text-lg">
-            <a href="#" class="text-gray-600 hover:text-gray-800">Articles</a>
+            <a href="<%=request.getContextPath()%>/articles" class="text-gray-600 hover:text-gray-800">Articles</a>
 
             <!-- Check if the author's role is EDITOR -->
             <c:if test="${sessionScope.authorRole == 'EDITOR'}">
@@ -37,20 +38,14 @@
         </div>
     </div>
 </header>
-<div class="text-gray-600 text-lg">
-    <c:if test="${not empty sessionScope.authorName && not empty sessionScope.authorRole}">
-        Welcome, <strong>${sessionScope.authorName}</strong>! Your role: <strong>${sessionScope.authorRole}</strong>
-    </c:if>
-    <c:if test="${empty sessionScope.authorName || empty sessionScope.authorRole}">
-        Please log in to access your account.
-    </c:if>
-</div>
+
 <!-- Search Bar Centered Below the Navbar -->
 <div class="mt-4 flex justify-center">
-    <div class="relative w-full md:w-1/2">
-        <input type="text" placeholder="Search" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <button class="absolute inset-y-0 right-0 px-4 py-2 bg-black text-white rounded-r-md hover:bg-gray-800">Search</button>
-    </div>
+    <form action="<%=request.getContextPath()%>/articles?action=search" method="get" class="relative w-full md:w-1/2">
+        <input type="text" name="query" placeholder="Search" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <input type="hidden" name="action" value="search">
+        <button type="submit" class="absolute inset-y-0 right-0 px-4 py-2 bg-black text-white rounded-r-md hover:bg-gray-800">Search</button>
+    </form>
 </div>
 
 <!-- Main Content -->
@@ -68,20 +63,57 @@
                     <img src="https://res.cloudinary.com/dz4pww2qv/image/upload/v1728568781/bqxhpotosrxbg9eqgcgc.png" alt="article" class="absolute inset-0 w-full h-full object-cover">
                 </div>
                 <h3 class="text-xl font-semibold mt-4">${article.title}</h3>
-                <p class="text-gray-500 text-sm">Abdellah</p>
-                <p class="text-gray-600 mt-2">${article.contenu}</p>
+                <p class="text-gray-500 text-sm">
+                    <span class="font-bold">BY : </span>
+                    <c:choose>
+                        <c:when test="${article.editor != null}">
+                            ${article.editor.firstName} ${article.editor.lastName}
+                        </c:when>
+                        <c:otherwise>
+                            Unknown Editor
+                        </c:otherwise>
+                    </c:choose>
+                </p>
+                <p class="text-gray-600 mt-2">
+                    <c:choose>
+                        <c:when test="${fn:length(article.contenu) > 100}">
+                            ${fn:substring(article.contenu, 0, 100)}...
+                        </c:when>
+                        <c:otherwise>
+                            ${article.contenu}
+                        </c:otherwise>
+                    </c:choose>
+                </p>
                 <a href="#" class="text-blue-500 hover:underline mt-4 block">View more</a>
             </div>
         </c:forEach>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-12 flex justify-center space-x-2">
-        <a href="#" class="px-4 py-2 bg-gray-200 text-gray-600 rounded-l hover:bg-gray-300">Previous</a>
-        <a href="#" class="px-4 py-2 bg-gray-300 text-gray-600 hover:bg-gray-400">1</a>
-        <a href="#" class="px-4 py-2 bg-gray-300 text-gray-600 hover:bg-gray-400">2</a>
-        <a href="#" class="px-4 py-2 bg-gray-300 text-gray-600 hover:bg-gray-400">3</a>
-        <a href="#" class="px-4 py-2 bg-gray-200 text-gray-600 rounded-r hover:bg-gray-300">Next</a>
+    <div class="mt-12 flex justify-center space-x-1 my-12">
+        <!-- Previous Button -->
+        <c:if test="${currentPage > 1}">
+            <a href="${pageContext.request.contextPath}/articles?page=${currentPage - 1}"
+               class="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-l-lg hover:bg-gray-400 hover:text-gray-900 transition-colors duration-200">
+                Previous
+            </a>
+        </c:if>
+
+        <!-- Page Numbers -->
+        <c:forEach var="i" begin="1" end="${totalPages}">
+            <a href="${pageContext.request.contextPath}/articles?page=${i}"
+               class="px-4 py-2 font-semibold text-gray-600 hover:text-gray-900 transition-colors duration-200
+           ${i == currentPage ? 'bg-gray-800 text-white' : 'bg-gray-200 hover:bg-gray-300'} rounded-lg shadow-md">
+                    ${i}
+            </a>
+        </c:forEach>
+
+        <!-- Next Button -->
+        <c:if test="${currentPage < totalPages}">
+            <a href="${pageContext.request.contextPath}/articles?page=${currentPage + 1}"
+               class="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-r-lg hover:bg-gray-400 hover:text-gray-900 transition-colors duration-200">
+                Next
+            </a>
+        </c:if>
     </div>
 </main>
 
