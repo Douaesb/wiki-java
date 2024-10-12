@@ -269,7 +269,7 @@ public class ArticleServlet extends HttpServlet {
 
 
 
-    private void updateArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void updateArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long articleIdParam = Long.parseLong(request.getParameter("articleId"));
         String title = request.getParameter("title");
         String content = request.getParameter("content");
@@ -313,7 +313,7 @@ public class ArticleServlet extends HttpServlet {
             view.forward(request, response);
         }
     }
-    private void deleteArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void deleteArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long articleIdParam = Long.parseLong(request.getParameter("articleId"));
 
         if (articleIdParam == 0) {

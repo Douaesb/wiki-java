@@ -2,7 +2,6 @@ package com.wiki_java.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.wiki.wikijava.entity.Article;
@@ -72,7 +71,7 @@ public class ArticleServletTest {
         when(request.getParameter("content")).thenReturn("Updated Content");
 
         // Ensure that getArticle() is properly mocked
-        when(articleService.getArticle(1)).thenReturn(new Article());
+        when(articleService.getArticle(1L)).thenReturn(new Article());
 
         articleServlet.updateArticle(request, response);
 
@@ -84,7 +83,7 @@ public class ArticleServletTest {
         when(request.getParameter("articleId")).thenReturn("1");
 
 
-        when(articleService.getArticle(1)).thenReturn(new Article());
+        when(articleService.getArticle(1L)).thenReturn(new Article());
 
         articleServlet.deleteArticle(request, response);
 
