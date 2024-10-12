@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="wiki-java-1.0-SNAPSHOT.war">
+    <root id="archive" name="blog-management.war">
       <element id="artifact" artifact-name="wiki-java:war exploded" />
     </root>
   </artifact>
