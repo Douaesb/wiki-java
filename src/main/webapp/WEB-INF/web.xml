@@ -3,4 +3,75 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <servlet>
+        <servlet-name>articleServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.ArticleServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>articleServlet</servlet-name>
+        <url-pattern>/articles</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>CommentServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.CommentServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CommentServlet</servlet-name>
+        <url-pattern>/comments</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.AuthServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+
+<servlet>
+        <servlet-name>AddAuthorServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.AuthorServlet.AddAuthorServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AddAuthorServlet</servlet-name>
+        <url-pattern>/addAuthor</url-pattern>
+    </servlet-mapping>
+
+
+
+    <servlet>
+        <servlet-name>Authors</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.AuthorServlet.AuthorListServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Authors</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteAuthor</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.AuthorServlet.DeleteAuthorServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DeleteAuthor</servlet-name>
+        <url-pattern>/deleteAuthor</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>org.wiki.wikijava.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
 </web-app>
