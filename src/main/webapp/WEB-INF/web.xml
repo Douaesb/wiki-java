@@ -55,7 +55,7 @@
 
     <servlet-mapping>
         <servlet-name>Authors</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/Author</url-pattern>
     </servlet-mapping>
 
     <servlet>

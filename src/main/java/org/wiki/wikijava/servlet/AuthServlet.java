@@ -42,7 +42,7 @@ public class AuthServlet extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("adminEmail", adminEmail);
             session.setAttribute("adminRole", adminRole);
-            resp.sendRedirect("Authors");
+            resp.sendRedirect(req.getContextPath()+ "/Author");
             return;
         }
 

@@ -45,9 +45,12 @@ public class ArticleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("authorName") == null) {
+            System.out.println("author name is null");
             resp.sendRedirect(req.getContextPath() + "/");
             return;
         }
+        System.out.println("author name is not");
+
         String action = req.getParameter("action");
         if (action == null) {
             action = "list";

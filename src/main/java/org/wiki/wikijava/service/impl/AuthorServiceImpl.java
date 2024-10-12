@@ -11,13 +11,11 @@ import org.wiki.wikijava.service.AuthorService;
 import java.time.LocalDate;
 import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
-    private static final Logger logger = LoggerFactory.getLogger(AuthorServiceImpl.class);
 
     private final AuthorRepository authorRepository;
 
     public AuthorServiceImpl(AuthorRepository authorRepository) {
 
-        logger.info("logger initialized.");
 
         this.authorRepository = authorRepository;
     }
@@ -29,12 +27,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     public Author getAuthorById(Long id) {
 
-        logger.info("Retrieving author with ID: {}", id);
         return authorRepository.findById(id);
     }
 
     public List<Author> getAuthors(int page, int pageSize) {
-        logger.info("Retrieving authors - page: {}, pageSize: {}", page, pageSize);
         int offset = (page - 1) * pageSize;
         return authorRepository.findAll(offset, pageSize);
     }
@@ -49,7 +45,6 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     public void updateAuthor(Long authorId, String firstName, String lastName, String email, String role, LocalDate birthDate) {
-        logger.info("Updating author with ID: {}", authorId);
         Author author ;
 
         author = getAuthor(firstName, lastName, email, role, birthDate);
@@ -67,7 +62,6 @@ public class AuthorServiceImpl implements AuthorService {
             author = new Editor();
             author.setRole(Role.EDITOR);
         } else {
-            logger.error("Invalid role: {}", role);
             throw new IllegalArgumentException("Invalid role");
         }
         author.setFirstName(firstName);
@@ -80,19 +74,15 @@ public class AuthorServiceImpl implements AuthorService {
 
     public boolean deleteAuthor(long id) {
 
-        logger.info("Deleting author with ID: {}", id);
         return authorRepository.delete(id);
     }
     @Override
     public Author authenticate(String email) {
-        logger.info("Authenticating author with email: {}", email);
         Author author = authorRepository.findByEmail(email);
 
         if (author != null) {
-            logger.info("Author authenticated successfully: {}", author);
             return author;
         }
-        logger.warn("Authentication failed for email: {}", email);
         return null;
     }
 }

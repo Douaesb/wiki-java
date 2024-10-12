@@ -13,9 +13,8 @@
     <div class="container mx-auto px-6 py-3 flex justify-between items-center">
         <div class="flex space-x-4">
             <a href="#" class="font-bold text-xl">MyBlog</a>
-            <a href="#" class="hover:text-blue-200">Articles</a>
-            <a href="#" class="hover:text-blue-200">Authors</a>
-            <a href="#" class="hover:text-blue-200">Comments</a>
+            <a href="<%=request.getContextPath()+ "/articles"%>" class="hover:text-blue-200">Articles</a>
+            <a href="" class="hover:text-blue-200">Authors</a>
         </div>
         <div class="pr-4">
             <c:if test="${not empty sessionScope.adminEmail}">
