@@ -42,7 +42,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
 
-            String jpql = "SELECT a FROM Article a JOIN a.editor WHERE a.statusArticle = :status";
+            String jpql = "SELECT a FROM Article a JOIN a.editor WHERE a.statusArticle = :status ORDER BY a.creationDate DESC";
 
             // Retrieve the articles
             List<Article> articles = entityManager.createQuery(jpql, Article.class)
@@ -127,9 +127,10 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     public List<Article> findByTitle(String title) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-
-            return entityManager.createQuery("SELECT a FROM Article a WHERE a.title LIKE :title", Article.class)
-                    .setParameter("title", "%" + title + "%") // Using LIKE for partial matching
+            return entityManager.createQuery(
+                            "SELECT a FROM Article a WHERE a.title LIKE :title AND a.statusArticle = :status ORDER BY a.creationDate DESC", Article.class)
+                    .setParameter("title", "%" + title + "%")
+                    .setParameter("status", StatusArticle.PUBLISHED)
                     .getResultList();
         } finally {
             entityManager.close();

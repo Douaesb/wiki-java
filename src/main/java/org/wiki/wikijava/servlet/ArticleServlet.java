@@ -100,10 +100,15 @@ public class ArticleServlet extends HttpServlet {
         }
 
         List<Article> searchResults = articleService.searchArticle(query);
+        Map<Article, Integer> articleWithCommentCounts = new HashMap<>();
         if (searchResults.isEmpty()) {
             request.setAttribute("message", "No articles found with the query: " + query);
         } else {
-            request.setAttribute("articles", searchResults);
+            for (Article article : searchResults) {
+                int commentCount = articleService.countCommentsByArticleId(article.getId());
+                articleWithCommentCounts.put(article, commentCount);
+            }
+            request.setAttribute("articleWithCommentCounts", articleWithCommentCounts);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/articles/index.jsp");
         dispatcher.forward(request, response);
